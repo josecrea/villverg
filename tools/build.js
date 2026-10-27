@@ -1,12 +1,13 @@
 #!/usr/bin/env node
-// Genera el sitio estático de villverg.com en la raíz del repositorio.
+// Genera el sitio estático de VILLVERG en la raíz del repositorio.
 // Cabecera, pie y <head> se escriben UNA vez aquí y se comparten entre páginas:
-// así el NAP y los datos legales no pueden divergir de una página a otra.
+// así los datos de la sociedad no pueden divergir de una página a otra.
 // Uso: node tools/build.js
 
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { mapa } = require('./mapa');
 
 const RAIZ = path.join(__dirname, '..');
 // Se sirve como sitio de proyecto de GitHub Pages: josecrea.github.io/villverg.
@@ -15,56 +16,25 @@ const RAIZ = path.join(__dirname, '..');
 const BASE = '/villverg';
 const SITIO = `https://josecrea.github.io${BASE}`;
 
-// Datos de la sociedad. Única fuente de verdad del sitio.
+// Datos de la sociedad: única fuente de verdad del sitio. Los legales son los mismos
+// que publican okservice.es y villasproperties.es, porque es la misma empresa.
 const EMPRESA = {
   razonSocial: 'VILLVERG SOLUCIONES INTEGRALES SL',
   cif: 'B19430115',
-  domicilio: 'C/ Mencey Anaga 23, portal 1-19',
+  domicilio: 'C/ Mencey Anaga 23, portal 1, puerta 19, Residencial Biltmore, Las Chafiras',
   cp: '38639',
   localidad: 'San Miguel de Abona',
   provincia: 'Santa Cruz de Tenerife',
   telefono: '+34679325222',
   telefonoVisible: '679 32 52 22',
   email: 'info@villverg.com',
+  instalador: '25094',
 };
-
-const MARCAS = [
-  {
-    nombre: '#Okservice.es',
-    url: 'https://okservice.es/',
-    dominio: 'okservice.es',
-    eyebrow: 'Instalaciones eléctricas',
-    texto: 'Electricista autorizado en Tenerife Sur: averías los 7 días, boletines CIE, cuadros, puntos de recarga y fotovoltaica.',
-    detalle: 'Empresa instaladora habilitada en baja tensión, nº 25094 del Gobierno de Canarias, con base en Granadilla de Abona y el precio dicho antes de salir.',
-  },
-  {
-    nombre: "Villa's Properties",
-    url: 'https://villasproperties.es/',
-    dominio: 'villasproperties.es',
-    eyebrow: 'Inmobiliaria',
-    texto: 'Compraventa de viviendas en el sur de Tenerife, con valoraciones apoyadas en precios escriturados y Catastro.',
-    detalle: 'Para quien vende, quien compra y quien invierte desde fuera de la isla.',
-  },
-  {
-    nombre: 'biovida.shop',
-    url: null, // la tienda no responde por HTTPS a 27-oct-2026: no se enlaza hasta que funcione
-    dominio: 'biovida.shop',
-    eyebrow: 'Tienda online',
-    texto: 'La línea de comercio electrónico del grupo.',
-    detalle: 'Facturada por la misma sociedad, con el mismo CIF y la misma numeración que el resto de marcas.',
-  },
-];
-
-const ICONO_RAYO = '<svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z"/></svg>';
-const ICONO_CASA = '<svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>';
-const ICONO_BOLSA = '<svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1 14H6L5 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>';
-const ICONOS = [ICONO_RAYO, ICONO_CASA, ICONO_BOLSA];
 
 const escapar = (s) => String(s)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 function schemaOrganizacion() {
-  const marcasConWeb = MARCAS.filter((m) => m.url);
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -84,8 +54,11 @@ function schemaOrganizacion() {
       addressRegion: EMPRESA.provincia,
       addressCountry: 'ES',
     },
-    brand: MARCAS.map((m) => ({ '@type': 'Brand', name: m.nombre })),
-    subOrganization: marcasConWeb.map((m) => ({ '@type': 'Organization', name: m.nombre, url: m.url })),
+    brand: [
+      { '@type': 'Brand', name: '#Okservice.es', url: 'https://okservice.es/' },
+      { '@type': 'Brand', name: "Villa's Properties", url: 'https://villasproperties.es/' },
+      { '@type': 'Brand', name: 'biovida.shop' },
+    ],
   };
 }
 
@@ -101,7 +74,7 @@ function head({ titulo, descripcion, ruta, indexable = true, schema = null }) {
 <meta name="description" content="${escapar(descripcion)}">
 <meta name="robots" content="${indexable ? 'index,follow' : 'noindex,follow'}">
 <link rel="canonical" href="${canonical}">
-<meta name="theme-color" content="#111827">
+<meta name="theme-color" content="#23272a">
 <meta name="author" content="${EMPRESA.razonSocial}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="VILLVERG">
@@ -109,73 +82,36 @@ function head({ titulo, descripcion, ruta, indexable = true, schema = null }) {
 <meta property="og:title" content="${escapar(titulo)}">
 <meta property="og:description" content="${escapar(descripcion)}">
 <meta property="og:url" content="${canonical}">
-<meta property="og:image" content="${SITIO}/assets/img/hero-poster.jpg">
 <link rel="icon" href="${BASE}/favicon.svg" type="image/svg+xml">
-<link rel="preload" as="font" type="font/woff2" href="${BASE}/assets/fonts/assistant-latin.woff2" crossorigin>
-<link rel="stylesheet" href="${BASE}/assets/css/site.css">
+<link rel="preload" as="font" type="font/woff2" href="${BASE}/assets/fonts/bricolage-latin.woff2" crossorigin>
 <link rel="stylesheet" href="${BASE}/assets/css/villverg.css">${ld}
 </head>`;
 }
 
-function cabecera(activa) {
-  const enlace = (href, texto, clave) => (clave === activa
-    ? `<a href="${href}" class="is-active" aria-current="page">${texto}</a>`
-    : `<a href="${href}">${texto}</a>`);
+function cabecera() {
   return `<body>
-<a class="skip" href="#contenido">Ir al contenido</a>
-
-<header class="site-head">
-  <div class="nav-pill">
-    <a class="brand brand-texto" href="${BASE}/" aria-label="VILLVERG — inicio">VILL<span>VERG</span></a>
-    <nav class="site-nav" aria-label="Navegación principal">
-      ${enlace(`${BASE}/`, 'Inicio', 'inicio')}
-      <a href="${BASE}/#marcas">Marcas</a>
-      <a href="${BASE}/#sociedad" class="is-optional">La sociedad</a>
-      <a href="${BASE}/#contacto" class="is-optional">Contacto</a>
-      <a class="btn btn-accion btn-sm" href="tel:${EMPRESA.telefono}">Llamar</a>
-    </nav>
-  </div>
+<a class="saltar" href="#contenido">Ir al contenido</a>
+<header class="cabecera">
+  <a class="logotipo" href="${BASE}/" aria-label="VILLVERG, inicio">villverg<span class="logotipo-punto">.</span></a>
+  <nav class="menu" aria-label="Principal">
+    <a href="${BASE}/#marcas">Marcas</a>
+    <a class="menu-opcional" href="${BASE}/#sociedad">La empresa</a>
+    <a href="${BASE}/#contacto">Contacto</a>
+  </nav>
 </header>
 `;
 }
 
 function pie() {
   const anio = new Date().getFullYear();
-  const listaMarcas = MARCAS.map((m) => (m.url
-    ? `<li><a href="${m.url}" rel="noopener">${escapar(m.nombre)}</a></li>`
-    : `<li>${escapar(m.nombre)}</li>`)).join('\n            ');
   return `
-<footer class="site-foot">
-  <div class="wrap">
-    <div class="foot-top">
-      <div class="foot-marca">
-        <a class="brand-texto" href="${BASE}/">VILL<span>VERG</span></a>
-        <p>Una sola sociedad en Tenerife Sur detrás de varias marcas: instalaciones eléctricas, inmobiliaria y comercio online.</p>
-        <ul class="foot-atajos">
-          <li><a href="tel:${EMPRESA.telefono}"><strong>${EMPRESA.telefonoVisible}</strong></a></li>
-          <li><a href="mailto:${EMPRESA.email}">${EMPRESA.email}</a></li>
-        </ul>
-      </div>
-      <div class="foot-cols">
-        <div>
-          <h2>Marcas</h2>
-          <ul>
-            ${listaMarcas}
-          </ul>
-        </div>
-        <div>
-          <h2>Información legal</h2>
-          <ul>
-            <li><a href="${BASE}/aviso-legal.html">Aviso legal</a></li>
-            <li><a href="${BASE}/privacidad.html">Política de privacidad</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="legal">
-      <p><strong>${EMPRESA.razonSocial}</strong> · CIF ${EMPRESA.cif} · ${EMPRESA.domicilio}, ${EMPRESA.cp} ${EMPRESA.localidad} (${EMPRESA.provincia})</p>
-      <p>© ${anio} VILLVERG. En Canarias las operaciones llevan IGIC, no IVA.</p>
-    </div>
+<footer class="pie">
+  <div class="contenedor pie-rejilla">
+    <p>© ${anio} ${EMPRESA.razonSocial}, CIF ${EMPRESA.cif}. ${EMPRESA.localidad}, Tenerife.</p>
+    <nav aria-label="Información legal">
+      <a href="${BASE}/aviso-legal.html">Aviso legal</a>
+      <a href="${BASE}/privacidad.html">Privacidad</a>
+    </nav>
   </div>
 </footer>
 </body>
@@ -183,110 +119,101 @@ function pie() {
 `;
 }
 
-function tarjetaMarca(m, i) {
-  const contenido = `
-          <span class="ico">${ICONOS[i] || ICONO_RAYO}</span>
-          <p class="eyebrow">${escapar(m.eyebrow)}</p>
-          <h3>${escapar(m.nombre)}</h3>
-          <p>${escapar(m.texto)}</p>
-          <p class="detail">${escapar(m.detalle)}</p>
-          <span class="marca-url">${escapar(m.dominio)}</span>`;
-  return m.url
-    ? `        <a class="service" href="${m.url}" rel="noopener">${contenido}
-          <span class="tag">Visitar la web</span>
-        </a>`
-    : `        <div class="service sin-enlace">${contenido}
-        </div>`;
-}
+const SITIOS_MAPA = [
+  { x: 528, y: 300, titulo: 'Granadilla de Abona', detalle: 'Base de #Okservice.es', lado: 'izq' },
+  { x: 368, y: 446, titulo: 'Las Chafiras', detalle: "Domicilio social y Villa's Properties", lado: 'izq' },
+];
 
 function paginaInicio() {
   return `${head({
-    titulo: 'VILLVERG · Sociedad de Tenerife Sur detrás de #Okservice.es y Villa\'s Properties',
-    descripcion: 'VILLVERG SOLUCIONES INTEGRALES SL (CIF B19430115): una sola sociedad en Tenerife Sur con varias marcas — instalaciones eléctricas, inmobiliaria y tienda online.',
+    titulo: "VILLVERG · La empresa del sur de Tenerife detrás de #Okservice.es y Villa's Properties",
+    descripcion: `${EMPRESA.razonSocial} (CIF ${EMPRESA.cif}) es una empresa de San Miguel de Abona, Tenerife. Trabaja con dos marcas: #Okservice.es, electricista autorizado, y Villa's Properties, inmobiliaria.`,
     ruta: '/',
     schema: schemaOrganizacion(),
   })}
-${cabecera('inicio')}
+${cabecera()}
 <main id="contenido">
 
-  <section class="hero" aria-labelledby="h-hero">
-    <div class="wrap hero-grid">
+  <section class="portada" aria-labelledby="h-portada">
+    <div class="portada-texto">
+      <h1 id="h-portada">Una empresa del sur de Tenerife</h1>
+      <p class="entradilla">Hacemos instalaciones eléctricas y vendemos casas, cada cosa con su nombre. Detrás de los dos está VILLVERG.</p>
+      <div class="portada-acciones">
+        <a class="boton boton-lleno" href="#marcas">Conocer las marcas</a>
+        <a class="boton boton-hueco" href="#contacto">Contactar</a>
+      </div>
+    </div>
+    <div class="portada-mapa">
+      ${mapa(SITIOS_MAPA)}
+    </div>
+  </section>
+
+  <section class="marcas" id="marcas" aria-labelledby="h-marcas">
+    <div class="contenedor">
+      <h2 class="titulo-seccion" id="h-marcas">Dos oficios, una sola firma</h2>
+      <p class="subtitulo-seccion">Cada marca tiene su web y su equipo. Quien responde de todas es la misma sociedad, con el mismo CIF.</p>
+    </div>
+
+    <article class="marca marca-okservice" aria-labelledby="h-okservice">
+      <div class="marca-interior">
+        <div>
+          <h3 class="marca-nombre" id="h-okservice">#Okservice.es</h3>
+          <p class="marca-oficio">Electricista autorizado en Tenerife Sur</p>
+        </div>
+        <div>
+          <p>Averías los siete días, boletines eléctricos, cuadros, puntos de recarga para coche eléctrico y placas solares. El precio se dice antes de salir.</p>
+          <dl class="marca-hechos">
+            <div><dt>Instalador autorizado en baja tensión</dt><dd>nº ${EMPRESA.instalador}</dd></div>
+            <div><dt>Base</dt><dd>Granadilla de Abona</dd></div>
+          </dl>
+          <a class="boton" href="https://okservice.es/" rel="noopener">Ir a okservice.es</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="marca marca-villas" aria-labelledby="h-villas">
+      <div class="marca-interior">
+        <div>
+          <h3 class="marca-nombre" id="h-villas">Villa's Properties</h3>
+          <p class="marca-oficio">Inmobiliaria en el sur de Tenerife</p>
+        </div>
+        <div>
+          <p>Compra, venta e inversión en vivienda. Las valoraciones se apoyan en precios escriturados y en Catastro, no solo en lo que piden los anuncios.</p>
+          <dl class="marca-hechos">
+            <div><dt>Zona</dt><dd>Sur de Tenerife</dd></div>
+            <div><dt>Oficina</dt><dd>Las Chafiras</dd></div>
+          </dl>
+          <a class="boton" href="https://villasproperties.es/" rel="noopener">Ir a villasproperties.es</a>
+        </div>
+      </div>
+    </article>
+
+    <p class="marca-menor">También es nuestra <strong>biovida.shop</strong>, la tienda online del grupo.</p>
+  </section>
+
+  <section class="sociedad" id="sociedad" aria-labelledby="h-sociedad">
+    <div class="contenedor sociedad-rejilla">
       <div>
-        <p class="eyebrow eyebrow-claro">VILLVERG SOLUCIONES INTEGRALES SL</p>
-        <h1 id="h-hero">Una sociedad,<br><span class="ray">varias marcas</span></h1>
-        <p class="hero-lead">Desde Tenerife Sur damos servicio con nombres distintos según lo que necesites: electricidad, vivienda o compra online.</p>
-        <p class="hero-lead hero-lead-2">Detrás de todas está la misma empresa, con el mismo CIF y la misma responsabilidad.</p>
-        <div class="hero-actions">
-          <a class="btn btn-accion" href="#marcas">Ver las marcas</a>
-          <a class="btn btn-linea" href="#contacto">Contacto</a>
-        </div>
+        <h2 class="titulo-seccion" id="h-sociedad">La empresa</h2>
+        <p>VILLVERG es una sociedad limitada con domicilio en Las Chafiras. Las marcas no son empresas aparte: facturan todas desde la misma sociedad, con una sola numeración.</p>
+        <p>Si eres proveedor, banco o colaborador y necesitas los datos de facturación, son estos.</p>
       </div>
-      <aside class="price-card" aria-labelledby="h-ficha">
-        <p class="eyebrow" id="h-ficha">Ficha de la sociedad</p>
-        <dl class="datos">
-          <div><dt>Razón social</dt><dd>VILLVERG SOLUCIONES INTEGRALES SL</dd></div>
-          <div><dt>CIF</dt><dd>${EMPRESA.cif}</dd></div>
-          <div><dt>Domicilio</dt><dd>${EMPRESA.localidad} (Tenerife)</dd></div>
-          <div><dt>Instalador autorizado BT</dt><dd>nº 25094</dd></div>
-        </dl>
-      </aside>
+      <dl class="ficha">
+        <div><dt>Razón social</dt><dd>${EMPRESA.razonSocial}</dd></div>
+        <div><dt>CIF</dt><dd>${EMPRESA.cif}</dd></div>
+        <div><dt>Domicilio social</dt><dd>${EMPRESA.domicilio}, ${EMPRESA.cp} ${EMPRESA.localidad} (${EMPRESA.provincia})</dd></div>
+        <div><dt>Empresa instaladora</dt><dd>Autorizada en baja tensión, nº ${EMPRESA.instalador}, Gobierno de Canarias</dd></div>
+        <div><dt>Impuesto indirecto</dt><dd>IGIC (Canarias)</dd></div>
+      </dl>
     </div>
   </section>
 
-  <div class="trust">
-    <div class="wrap">
-      <span>${ICONO_RAYO.replace('ico-svg', 'ico-mini')} Sociedad única · <b>CIF ${EMPRESA.cif}</b></span>
-      <span>Base en <b>Tenerife Sur</b></span>
-      <span>Facturación con <b>IGIC</b></span>
-    </div>
-  </div>
-
-  <section class="section" id="marcas" aria-labelledby="h-marcas">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Nuestras marcas</p>
-        <h2 id="h-marcas">Cada necesidad, <span class="mark">su marca</span></h2>
-        <p>Cada marca tiene su web, su equipo y su forma de trabajar. Ninguna es una empresa aparte: todas son VILLVERG.</p>
-      </div>
-      <div class="services">
-${MARCAS.map(tarjetaMarca).join('\n')}
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-warm" id="sociedad" aria-labelledby="h-soc">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">La sociedad</p>
-        <h2 id="h-soc">Por qué <span class="mark">una sola empresa</span></h2>
-      </div>
-      <ol class="steps">
-        <li class="step"><h3>Un solo responsable</h3><p>Contratas con la marca que conoces, pero quien responde es la sociedad, con su CIF y su domicilio.</p></li>
-        <li class="step"><h3>Una sola numeración</h3><p>Todas las marcas facturan con la misma serie correlativa: lo que exige la normativa de facturación.</p></li>
-        <li class="step"><h3>Arraigo local</h3><p>Domicilio en San Miguel de Abona y trabajo diario en el sur de Tenerife.</p></li>
-      </ol>
-    </div>
-  </section>
-
-  <section class="section" id="contacto" aria-labelledby="h-contacto">
-    <div class="wrap hero-grid">
-      <div class="section-head section-head-flush">
-        <p class="eyebrow">Contacto</p>
-        <h2 id="h-contacto">Hablemos</h2>
-        <p>Para un servicio concreto, lo más rápido es la web de la marca. Para asuntos de la sociedad —proveedores, administración, colaboraciones— escríbenos o llámanos.</p>
-        <div class="hero-actions">
-          <a class="btn btn-accion" href="tel:${EMPRESA.telefono}">Llamar ${EMPRESA.telefonoVisible}</a>
-          <a class="btn btn-linea" href="mailto:${EMPRESA.email}">Escribir un correo</a>
-        </div>
-      </div>
-      <div class="price-card">
-        <p class="eyebrow">Datos de contacto</p>
-        <dl class="datos">
-          <div><dt>Teléfono</dt><dd><a href="tel:${EMPRESA.telefono}">${EMPRESA.telefonoVisible}</a></dd></div>
-          <div><dt>Correo</dt><dd><a href="mailto:${EMPRESA.email}">${EMPRESA.email}</a></dd></div>
-          <div><dt>Domicilio social</dt><dd>${EMPRESA.domicilio}<br>${EMPRESA.cp} ${EMPRESA.localidad}</dd></div>
-        </dl>
-      </div>
+  <section class="contacto" id="contacto" aria-labelledby="h-contacto">
+    <div class="contenedor">
+      <h2 class="titulo-seccion" id="h-contacto">Escríbenos</h2>
+      <p>Para un trabajo eléctrico o una casa, lo más rápido es la web de cada marca. Para lo demás:</p>
+      <a class="contacto-correo" href="mailto:${EMPRESA.email}">${EMPRESA.email}</a>
+      <p class="contacto-telefono">o llama al <a href="tel:${EMPRESA.telefono}">${EMPRESA.telefonoVisible}</a></p>
     </div>
   </section>
 
@@ -294,81 +221,90 @@ ${MARCAS.map(tarjetaMarca).join('\n')}
 ${pie()}`;
 }
 
-function paginaTexto({ archivo, titulo, descripcion, h1, cuerpo }) {
+function paginaTexto({ archivo, titulo, descripcion, entradilla, cuerpo }) {
   return [archivo, `${head({ titulo: `${titulo} · VILLVERG`, descripcion, ruta: `/${archivo}`, indexable: false })}
-${cabecera(null)}
-<main id="contenido">
-  <section class="section">
-    <div class="wrap texto-legal">
-      <p class="eyebrow">VILLVERG</p>
-      <h1>${h1}</h1>
+${cabecera()}
+<main id="contenido" class="legal">
+  <div class="contenedor">
+    <h1>${titulo}</h1>
+    <p class="entradilla">${entradilla}</p>
 ${cuerpo}
-    </div>
-  </section>
+  </div>
 </main>
 ${pie()}`];
 }
 
-const DATOS_IDENTIFICATIVOS = `      <ul>
-        <li>Titular: ${EMPRESA.razonSocial}</li>
-        <li>CIF: ${EMPRESA.cif}</li>
-        <li>Domicilio: ${EMPRESA.domicilio}, ${EMPRESA.cp} ${EMPRESA.localidad} (${EMPRESA.provincia})</li>
-        <li>Teléfono: ${EMPRESA.telefonoVisible}</li>
-        <li>Correo electrónico: <a href="mailto:${EMPRESA.email}">${EMPRESA.email}</a></li>
-      </ul>`;
+const DATOS_TITULAR = `    <ul>
+      <li>Denominación social: ${EMPRESA.razonSocial}</li>
+      <li>CIF: ${EMPRESA.cif}</li>
+      <li>Domicilio social: ${EMPRESA.domicilio}, ${EMPRESA.cp} ${EMPRESA.localidad}, ${EMPRESA.provincia}</li>
+      <li>Teléfono: ${EMPRESA.telefonoVisible}</li>
+      <li>Correo: <a href="mailto:${EMPRESA.email}">${EMPRESA.email}</a></li>
+      <li>Empresa instaladora autorizada en baja tensión nº ${EMPRESA.instalador} ante la Dirección General de Industria del Gobierno de Canarias</li>
+    </ul>`;
 
+// Texto unificado con los avisos legales de villasproperties.es y okservice.es.
 const AVISO_LEGAL = paginaTexto({
   archivo: 'aviso-legal.html',
   titulo: 'Aviso legal',
-  descripcion: 'Aviso legal de villverg.com, titularidad de VILLVERG SOLUCIONES INTEGRALES SL.',
-  h1: 'Aviso legal',
-  cuerpo: `      <h2>Titular del sitio</h2>
-      <p>En cumplimiento del artículo 10 de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico, se informa de los datos del titular de este sitio web:</p>
-${DATOS_IDENTIFICATIVOS}
-      <h2>Objeto</h2>
-      <p>Este sitio presenta la sociedad y sus marcas comerciales. No se contratan servicios ni se venden productos desde aquí: cada marca tiene su propia web con sus condiciones.</p>
-      <h2>Propiedad intelectual</h2>
-      <p>Los textos, el diseño y las marcas que aparecen en este sitio pertenecen a ${EMPRESA.razonSocial} o se usan con autorización. No se permite su reproducción sin consentimiento.</p>
-      <h2>Enlaces</h2>
-      <p>Los enlaces a las webs de las marcas llevan a sitios de la misma sociedad. No respondemos del contenido de sitios de terceros.</p>
-      <h2>Legislación aplicable</h2>
-      <p>Este aviso se rige por la legislación española.</p>`,
+  descripcion: `Aviso legal del sitio de ${EMPRESA.razonSocial}.`,
+  entradilla: 'Quién está detrás de esta web, con qué datos y en qué condiciones. Lo exige la Ley 34/2002 (LSSI-CE).',
+  cuerpo: `    <h2>Titular del sitio</h2>
+    <p>Este sitio web es propiedad de ${EMPRESA.razonSocial}, que opera con las marcas comerciales #Okservice.es, Villa's Properties y biovida.shop.</p>
+${DATOS_TITULAR}
+    <h2>Objeto</h2>
+    <p>Este sitio presenta la sociedad y sus marcas. Desde aquí no se contratan servicios: cada marca tiene su web, con sus propias condiciones (<a href="https://okservice.es/terms" rel="noopener">okservice.es</a> y <a href="https://villasproperties.es/aviso-legal" rel="noopener">villasproperties.es</a>). El uso de la web implica la aceptación de estas condiciones.</p>
+    <h2>Propiedad intelectual</h2>
+    <p>Los textos, gráficos y el diseño de este sitio son de ${EMPRESA.razonSocial}, salvo que se indique otra cosa. Su reproducción total o parcial requiere autorización previa por escrito.</p>
+    <h2>Enlaces</h2>
+    <p>Las webs de las marcas pertenecen a la misma sociedad. De los sitios de terceros no controlamos ni respondemos de sus contenidos ni de sus políticas de privacidad.</p>
+    <h2>Responsabilidad</h2>
+    <p>${EMPRESA.razonSocial} no garantiza la disponibilidad continuada del sitio ni responde de los daños derivados de su uso, de su falta de disponibilidad o de errores en los contenidos, sin perjuicio de lo que disponga la normativa aplicable.</p>
+    <h2>Protección de datos</h2>
+    <p>El tratamiento de datos personales se explica en la <a href="${BASE}/privacidad.html">política de privacidad</a>.</p>
+    <h2>Legislación y jurisdicción</h2>
+    <p>Estas condiciones se rigen por la legislación española. Para cualquier controversia, las partes se someten a los juzgados y tribunales de Santa Cruz de Tenerife, salvo que la normativa de consumo establezca otro fuero.</p>
+    <h2>Reclamaciones</h2>
+    <p>Puedes dirigir cualquier reclamación a <a href="mailto:${EMPRESA.email}">${EMPRESA.email}</a>. La Comisión Europea ofrece además una plataforma de resolución de litigios en línea en <a href="https://ec.europa.eu/consumers/odr" rel="noopener">ec.europa.eu/consumers/odr</a>.</p>`,
 });
 
 const PRIVACIDAD = paginaTexto({
   archivo: 'privacidad.html',
   titulo: 'Política de privacidad',
-  descripcion: 'Política de privacidad de villverg.com.',
-  h1: 'Política de privacidad',
-  cuerpo: `      <h2>Responsable del tratamiento</h2>
-${DATOS_IDENTIFICATIVOS}
-      <h2>Qué datos tratamos</h2>
-      <p>Este sitio no tiene formularios, no usa cookies ni herramientas de analítica y no recoge datos personales al navegar. Solo tratamos los datos que nos facilites si nos escribes o nos llamas.</p>
-      <h2>Para qué y con qué base</h2>
-      <p>Para responder a tu consulta, con base en tu consentimiento al contactarnos (artículo 6.1.a del Reglamento (UE) 2016/679) o en la aplicación de medidas precontractuales si nos pides un servicio (artículo 6.1.b).</p>
-      <h2>Cuánto tiempo</h2>
-      <p>El necesario para atender la consulta y, si hay relación comercial, los plazos que exige la normativa fiscal y mercantil.</p>
-      <h2>Tus derechos</h2>
-      <p>Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a <a href="mailto:${EMPRESA.email}">${EMPRESA.email}</a>. Si no quedas conforme, puedes reclamar ante la Agencia Española de Protección de Datos (<a href="https://www.aepd.es" rel="noopener">aepd.es</a>).</p>
-      <h2>Alojamiento</h2>
-      <p>El sitio se sirve desde GitHub Pages (GitHub, Inc.), que puede registrar la dirección IP de las visitas por motivos técnicos y de seguridad, según su propia política de privacidad.</p>`,
+  descripcion: `Política de privacidad del sitio de ${EMPRESA.razonSocial}.`,
+  entradilla: 'Qué datos tratamos, para qué y cómo puedes ejercer tus derechos.',
+  cuerpo: `    <h2>Responsable</h2>
+    <p>${EMPRESA.razonSocial} es la responsable del tratamiento de los datos que nos facilites, tanto aquí como en las webs de sus marcas.</p>
+${DATOS_TITULAR}
+    <h2>Qué datos y para qué</h2>
+    <p>Esta web no tiene formularios: solo tratamos los datos que nos des si nos escribes o nos llamas, para:</p>
+    <ul>
+      <li>Atender tu consulta y, si contratas, gestionar la relación con nosotros.</li>
+      <li>Enviarte información sobre servicios parecidos a los que pediste, por interés legítimo en mantener la relación. Puedes oponerte cuando quieras.</li>
+      <li>Cumplir las obligaciones fiscales, contables y legales.</li>
+    </ul>
+    <h2>Cuánto tiempo</h2>
+    <p>El necesario para atender tu consulta y, si hay relación comercial, los plazos que fija la normativa fiscal y mercantil.</p>
+    <h2>Tus derechos</h2>
+    <p>Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad, y retirar cualquier consentimiento, escribiendo a <a href="mailto:${EMPRESA.email}">${EMPRESA.email}</a>. También puedes reclamar ante la Agencia Española de Protección de Datos (<a href="https://www.aepd.es" rel="noopener">aepd.es</a>).</p>
+    <h2>Cookies</h2>
+    <p>Esta web no usa cookies de análisis, de publicidad ni de perfilado, y no guarda nada en tu navegador. Las fuentes y los estilos se sirven desde el propio sitio.</p>
+    <h2>Alojamiento</h2>
+    <p>El sitio se sirve desde GitHub Pages (GitHub, Inc.), que puede registrar la dirección IP de las visitas por motivos técnicos y de seguridad según su propia política de privacidad.</p>`,
 });
 
 const PAGINA_404 = ['404.html', `${head({ titulo: 'Página no encontrada · VILLVERG', descripcion: 'Esta página no existe.', ruta: '/404.html', indexable: false })}
-${cabecera(null)}
-<main id="contenido">
-  <section class="section">
-    <div class="wrap">
-      <p class="eyebrow">Error 404</p>
-      <h1 class="h-404">Esta página no existe</h1>
-      <p>Puede que el enlace esté mal escrito o que la página se haya movido.</p>
-      <div class="hero-actions"><a class="btn btn-accion" href="${BASE}/">Volver al inicio</a></div>
-    </div>
-  </section>
+${cabecera()}
+<main id="contenido" class="error">
+  <div class="contenedor">
+    <h1>Esta página no existe</h1>
+    <p>Puede que el enlace esté mal escrito o que la página se haya movido.</p>
+    <p><a class="boton boton-lleno" href="${BASE}/">Volver al inicio</a></p>
+  </div>
 </main>
 ${pie()}`];
 
-const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#111827"/><path d="M14 16h9l9 24 9-24h9L37 50h-10Z" fill="#f1de27"/></svg>
+const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#23272a"/><path d="M14 16h9l9 24 9-24h9L37 50h-10Z" fill="#d9a21b"/></svg>
 `;
 
 const SITEMAP = `<?xml version="1.0" encoding="UTF-8"?>
@@ -382,7 +318,9 @@ const LLMS = `# VILLVERG
 > ${EMPRESA.razonSocial} (CIF ${EMPRESA.cif}) es una única sociedad con domicilio en ${EMPRESA.localidad}, Tenerife (Canarias, España). Opera con varias marcas comerciales; ninguna es una empresa independiente.
 
 ## Marcas
-${MARCAS.map((m) => `- ${m.nombre}${m.url ? ` (${m.url})` : ''}: ${m.texto}`).join('\n')}
+- #Okservice.es (https://okservice.es/): electricista autorizado en Tenerife Sur, empresa instaladora en baja tensión nº ${EMPRESA.instalador}.
+- Villa's Properties (https://villasproperties.es/): inmobiliaria en el sur de Tenerife.
+- biovida.shop: tienda online.
 
 ## Contacto de la sociedad
 - Teléfono: ${EMPRESA.telefonoVisible}
@@ -403,5 +341,5 @@ const SALIDAS = [
 
 for (const [archivo, contenido] of SALIDAS) {
   fs.writeFileSync(path.join(RAIZ, archivo), contenido);
-  console.log(`escrito ${archivo}`);
+  process.stdout.write(`escrito ${archivo}\n`);
 }

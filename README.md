@@ -2,7 +2,7 @@
 
 Web corporativa de **VILLVERG SOLUCIONES INTEGRALES SL** (CIF B19430115): la sociedad y sus marcas (#Okservice.es, Villa's Properties, biovida.shop).
 
-Misma plantilla visual que la v2 de okservice (`assets/css/site.css` copiada de `okservice-landing`) más una capa propia (`assets/css/villverg.css`).
+Diseño propio (`assets/css/villverg.css`): paleta sacada del sur de Tenerife (basalto, toba, liquen, Atlántico), Bricolage Grotesque + Source Serif 4 autoalojadas, y un mapa de curvas de nivel del Teide a la costa generado en `tools/mapa.js` con las sedes marcadas. Textos legales unificados con los de okservice.es y villasproperties.es.
 
 ## Construir
 
