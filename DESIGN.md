@@ -14,19 +14,19 @@ colors:
   linea-clara: "rgba(251, 250, 247, 0.22)"
 typography:
   display:
-    fontFamily: "'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif"
+    fontFamily: "'Fraunces', Georgia, 'Times New Roman', serif"
     fontSize: "clamp(2.8rem, 1.6rem + 5vw, 5.75rem)"
     fontWeight: 600
     lineHeight: 1.06
     letterSpacing: "-0.012em"
   headline:
-    fontFamily: "'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif"
+    fontFamily: "'Fraunces', Georgia, 'Times New Roman', serif"
     fontSize: "clamp(2.3rem, 1.6rem + 3vw, 3.9rem)"
     fontWeight: 500
     lineHeight: 1.06
     letterSpacing: "-0.012em"
   title:
-    fontFamily: "'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif"
+    fontFamily: "'Fraunces', Georgia, 'Times New Roman', serif"
     fontSize: "clamp(1.2rem, 1.05rem + 0.6vw, 1.45rem)"
     fontWeight: 500
     lineHeight: 1.5
@@ -94,13 +94,13 @@ components:
 
 **Creative North Star: "El Registro con Vistas"**
 
-Una sociedad seria que se deja ver con el paisaje delante. El sitio combina dos cosas que los grupos inmobiliarios premium (Engel & Völkers, Sotheby's International Realty, Lucas Fox) hacen bien: fotografía real y grande del sur de Tenerife a sangre, y la sobriedad de un documento mercantil, con datos comprobables en filetes finos. La portada es una foto con el titular en Bodoni; el resto alterna filas partidas foto/texto, una banda de paisaje y fichas de datos.
+Una sociedad seria que se deja ver con el paisaje delante. El sitio combina dos cosas que los grupos inmobiliarios premium (Engel & Völkers, Sotheby's International Realty, Lucas Fox) hacen bien: fotografía real y grande del sur de Tenerife a sangre, y la sobriedad de un documento mercantil, con datos comprobables en filetes finos. La portada es una foto con el titular en Fraunces; el resto alterna filas partidas foto/texto, una banda de paisaje y fichas de datos.
 
 La densidad es baja y el aire es generoso (secciones de 5 a 10rem). La jerarquía sale de la escala: un serif de alto contraste muy grande frente a una sans de texto discreta. No hay tarjetas iguales en rejilla, ni insignias, ni sombras de caja, ni esquinas redondeadas. La marca reparte; no vende servicios, y el diseño debe dejarse leer como respaldo, no como protagonista.
 
 **Key Characteristics:**
 - Fotografía a sangre, sin marcos, sin sombras de caja, sin radios.
-- Bodoni Moda para titulares y cifras clave; Manrope para texto e interfaz.
+- Fraunces para titulares y cifras clave; Manrope para texto e interfaz.
 - Azul noche atlántico, blanco cálido, piedra clara; latón como único acento.
 - Datos en listas de definición (`dl`) con filetes finos, no en tarjetas.
 - Movimiento solo en la entrada de la portada y en transiciones de estado.
@@ -114,7 +114,7 @@ Paleta de noche atlántica sobre papel cálido, con un único metal. Los neutros
 - **Azul Noche Hondo** (`noche-hondo`, #0a1d2b): pie de página, hover del botón oscuro y base de los degradados que oscurecen la foto de portada.
 
 ### Secondary
-- **Latón** (`laton`, #7a5c2e): acento sobre fondos claros, usado en el oficio de cada marca (Bodoni) y en las viñetas de los textos legales.
+- **Latón** (`laton`, #7a5c2e): acento sobre fondos claros, usado en el oficio de cada marca (Fraunces) y en las viñetas de los textos legales.
 - **Latón Claro** (`laton-claro`, #d2b07a): acento sobre fondos oscuros y estado interactivo: filete bajo el correo de contacto, hover de enlaces sobre noche, hover del botón claro, anillo de foco y selección de texto.
 
 ### Neutral
@@ -130,7 +130,7 @@ Paleta de noche atlántica sobre papel cálido, con un único metal. Los neutros
 
 ## Typography
 
-**Display Font:** Bodoni Moda (con Didot, Bodoni 72, Georgia, serif), autoalojada, pesos 400-900, `font-optical-sizing: auto`.
+**Display Font:** Fraunces (con Georgia, serif), autoalojada, pesos 400-700, eje óptico 9-144, `font-optical-sizing: auto`.
 **Body Font:** Manrope (con Helvetica Neue, Arial, sans-serif), autoalojada, pesos 300-800.
 
 **Character:** Un serif didone de contraste extremo con una geométrica humanista y neutra: editorial y de registro a la vez. El serif habla, la sans informa.
@@ -141,10 +141,10 @@ Paleta de noche atlántica sobre papel cálido, con un único metal. Los neutros
 - **Title** (500 serif, clamp(1.2rem, 1.05rem + 0.6vw, 1.45rem)): entradilla de la portada y párrafos de presentación en sans a este tamaño; el oficio de cada marca en serif.
 - **Body** (400, 1.0625rem, 1.65): texto corrido, máximo 64ch (70ch en legales).
 - **Label** (600, 0.8125rem a 0.9375rem, tracking 0.01em): botones, menú (500), `dt` de fichas, pies de foto. En minúsculas y mayúscula inicial; sin versalitas.
-- **Logotipo** (Bodoni 600, 1.45rem, tracking 0.32em, mayúsculas por contenido): la palabra VILLVERG; 1.15rem en pantallas de menos de 420px y 1.1rem en el pie.
+- **Logotipo** (Fraunces 600, 1.45rem, tracking 0.32em, mayúsculas por contenido): la palabra VILLVERG; 1.15rem en pantallas de menos de 420px y 1.1rem en el pie.
 
 ### Named Rules
-**The Serif Speaks Rule.** Bodoni solo para titulares, cifras clave, oficio de marca, correo destacado y logotipo. Nada de interfaz (botones, menú, etiquetas) en serif.
+**The Serif Speaks Rule.** Fraunces solo para titulares, cifras clave, oficio de marca, correo destacado y logotipo. Nada de interfaz (botones, menú, etiquetas) en serif.
 **The Lining Figures Rule.** Cifras de datos con `tabular-nums` o `lining-nums` para que CIF, teléfono y registro se lean como documento.
 
 ## Layout
@@ -180,18 +180,18 @@ Esquina recta en todo: botones, fotos, filas, fichas. Radio cero es la regla del
 Cabecera con logotipo espaciado a la izquierda y menú a la derecha en Manrope 500 a 0,9375rem. Los enlaces subrayan con un filete de 1px que crece de izquierda a derecha en 0,45s al pasar el cursor. El teléfono va separado por un filete vertical al 35 % del color actual. Sobre portada es blanco; en cabecera sólida, noche.
 
 ### Fila de marca (componente firma)
-Foto a sangre en un lado y texto en el otro: nombre de marca (Headline, noche), oficio en Bodoni latón, párrafo en tinta suave, lista de datos con filetes (`dt` tinta suave, `dd` 600 noche alineado a la derecha) y un botón oscuro. La foto se amplía ligeramente al pasar el cursor por la fila. Debajo, una línea sobria para marcas sin web propia (solo nombre en negrita, sin enlace).
+Foto a sangre en un lado y texto en el otro: nombre de marca (Headline, noche), oficio en Fraunces latón, párrafo en tinta suave, lista de datos con filetes (`dt` tinta suave, `dd` 600 noche alineado a la derecha) y un botón oscuro. La foto se amplía ligeramente al pasar el cursor por la fila. Debajo, una línea sobria para marcas sin web propia (solo nombre en negrita, sin enlace).
 
 ### Ficha de datos
 Lista de definición con filete superior de 1px en noche y filetes inferiores `linea`. En escritorio, rejilla de 11rem para el término y el resto para el valor; el término en Label tinta suave, el valor en tinta con cifras tabulares. Se usa para los datos de la sociedad y, en versión compacta, en cifras de presentación y contacto.
 
 ### Banda de contacto
-Fondo noche, titular Headline en blanco, correo en Bodoni grande con filete de Latón Claro que cambia a texto latón claro al pasar el cursor, y lista de datos con filetes claros.
+Fondo noche, titular Headline en blanco, correo en Fraunces grande con filete de Latón Claro que cambia a texto latón claro al pasar el cursor, y lista de datos con filetes claros.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** abrir cada sección con fotografía real del sur de Tenerife a sangre o con un titular Bodoni de gran escala sobre aire.
+- **Do** abrir cada sección con fotografía real del sur de Tenerife a sangre o con un titular Fraunces de gran escala sobre aire.
 - **Do** escribir «#Okservice.es» siempre con almohadilla y con .es, y «VILLVERG SOLUCIONES INTEGRALES SL» como razón social exacta.
 - **Do** presentar datos de la sociedad como listas de definición con filetes de 1px, no como tarjetas.
 - **Do** mantener esquina recta (0px) y superficies planas; que cambie el color, no la sombra.
@@ -201,7 +201,7 @@ Fondo noche, titular Headline en blanco, correo en Bodoni grande con filete de L
 ### Don't:
 - **Don't** usar rejillas de tarjetas iguales ni insignias sobre la portada.
 - **Don't** añadir sombras de caja, radios ni bordes decorativos a fotos y botones.
-- **Don't** usar Bodoni para interfaz ni cuerpo de texto.
+- **Don't** usar Fraunces para interfaz ni cuerpo de texto.
 - **Don't** introducir un segundo acento junto al latón, ni blanco puro ni grises neutros.
 - **Don't** inventar cifras, trayectoria ni testimonios: la ficha solo lleva datos comprobables.
 

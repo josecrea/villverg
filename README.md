@@ -2,7 +2,7 @@
 
 Web corporativa de **VILLVERG SOLUCIONES INTEGRALES SL** (CIF B19430115): la sociedad y sus marcas (#Okservice.es, Villa's Properties, biovida.shop).
 
-Diseño: web corporativa clásica al nivel de los grupos inmobiliarios premium (elegido por Jose). Fotografía real del sur de Tenerife a sangre, Bodoni Moda + Manrope autoalojadas, azul noche, blanco cálido, piedra y latón (`assets/css/villverg.css`). Procedencia de cada foto en `assets/img/*.json`. Contexto de producto en `PRODUCT.md`; sistema en `DESIGN.md`.
+Diseño: web corporativa clásica al nivel de los grupos inmobiliarios premium (elegido por Jose). Fotografía real del sur de Tenerife a sangre, Fraunces + Manrope autoalojadas, azul noche, blanco cálido, piedra y latón (`assets/css/villverg.css`). Procedencia de cada foto en `assets/img/*.json`. Contexto de producto en `PRODUCT.md`; sistema en `DESIGN.md`.
 
 ## Construir
 

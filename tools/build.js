@@ -87,7 +87,7 @@ function head({ titulo, descripcion, ruta, indexable = true, schema = null, prec
 <meta property="og:url" content="${canonical}">
 <meta property="og:image" content="${SITIO}/assets/img/portada-1400.webp">
 <link rel="icon" href="${BASE}/favicon.svg" type="image/svg+xml">
-<link rel="preload" as="font" type="font/woff2" href="${BASE}/assets/fonts/bodoni-moda-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="${BASE}/assets/fonts/fraunces-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="${BASE}/assets/fonts/manrope-latin.woff2" crossorigin>${precarga}
 <link rel="stylesheet" href="${BASE}/assets/css/villverg.css">${ld}
 </head>`;

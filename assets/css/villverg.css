@@ -1,15 +1,15 @@
 /* VILLVERG — hoja única.
    Web corporativa clásica al nivel de los grupos inmobiliarios premium: fotografía real
-   del sur de Tenerife a sangre, mucho aire, Bodoni Moda en titulares y Manrope en texto.
+   del sur de Tenerife a sangre, mucho aire, Fraunces en titulares y Manrope en texto.
    Azul noche atlántico, blanco cálido, piedra clara y latón como único acento.
    Fuentes autoalojadas (OFL, ver assets/fonts/OFL-*.txt). */
 
 @font-face {
-  font-family: 'Bodoni Moda';
+  font-family: 'Fraunces';
   font-style: normal;
-  font-weight: 400 900;
+  font-weight: 400 700;
   font-display: swap;
-  src: url('../fonts/bodoni-moda-latin.woff2') format('woff2');
+  src: url('../fonts/fraunces-latin.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Manrope';
@@ -31,7 +31,7 @@
   --linea: rgba(15, 42, 61, 0.14);
   --linea-clara: rgba(251, 250, 247, 0.22);
 
-  --serif: 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
   --sans: 'Manrope', 'Helvetica Neue', Arial, sans-serif;
 
   --t-xs: 0.8125rem;
@@ -65,7 +65,8 @@ img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-underline-offset: 0.22em; text-decoration-thickness: 1px; }
 h1, h2, h3 {
   font-family: var(--serif); font-weight: 500; line-height: 1.06; margin: 0;
-  letter-spacing: -0.012em; font-optical-sizing: auto; text-wrap: balance;
+  letter-spacing: 0.005em; font-optical-sizing: auto; text-wrap: balance;
+  font-variation-settings: "WONK" 0;
 }
 p { margin: 0 0 1.1em; max-width: 64ch; }
 :focus-visible { outline: 2px solid var(--laton-claro); outline-offset: 4px; }
