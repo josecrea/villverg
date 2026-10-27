@@ -7,7 +7,6 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const { mapa } = require('./mapa');
 
 const RAIZ = path.join(__dirname, '..');
 // Se sirve como sitio de proyecto de GitHub Pages: josecrea.github.io/villverg.
@@ -66,7 +65,7 @@ function schemaOrganizacion() {
   };
 }
 
-function head({ titulo, descripcion, ruta, indexable = true, schema = null }) {
+function head({ titulo, descripcion, ruta, indexable = true, schema = null, precarga = '' }) {
   const canonical = `${SITIO}${ruta}`;
   const ld = schema ? `\n<script type="application/ld+json">\n${JSON.stringify(schema, null, 1)}\n</script>` : '';
   return `<!DOCTYPE html>
@@ -78,7 +77,7 @@ function head({ titulo, descripcion, ruta, indexable = true, schema = null }) {
 <meta name="description" content="${escapar(descripcion)}">
 <meta name="robots" content="${indexable ? 'index,follow' : 'noindex,follow'}">
 <link rel="canonical" href="${canonical}">
-<meta name="theme-color" content="#23272a">
+<meta name="theme-color" content="#0f2a3d">
 <meta name="author" content="${EMPRESA.razonSocial}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="VILLVERG">
@@ -86,22 +85,28 @@ function head({ titulo, descripcion, ruta, indexable = true, schema = null }) {
 <meta property="og:title" content="${escapar(titulo)}">
 <meta property="og:description" content="${escapar(descripcion)}">
 <meta property="og:url" content="${canonical}">
+<meta property="og:image" content="${SITIO}/assets/img/portada-1400.webp">
 <link rel="icon" href="${BASE}/favicon.svg" type="image/svg+xml">
-<link rel="preload" as="font" type="font/woff2" href="${BASE}/assets/fonts/bricolage-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="${BASE}/assets/fonts/bodoni-moda-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="${BASE}/assets/fonts/manrope-latin.woff2" crossorigin>${precarga}
 <link rel="stylesheet" href="${BASE}/assets/css/villverg.css">${ld}
 </head>`;
 }
 
-function cabecera() {
+// En la portada la cabecera va transparente sobre la foto; en el resto, sólida.
+function cabecera({ solida = false } = {}) {
   return `<body>
 <a class="saltar" href="#contenido">Ir al contenido</a>
-<header class="cabecera">
-  <a class="logotipo" href="${BASE}/" aria-label="VILLVERG, inicio">villverg<span class="logotipo-punto">.</span></a>
-  <nav class="menu" aria-label="Principal">
-    <a href="${BASE}/#marcas">Marcas</a>
-    <a class="menu-opcional" href="${BASE}/#sociedad">La empresa</a>
-    <a href="${BASE}/#contacto">Contacto</a>
-  </nav>
+<header class="cabecera${solida ? ' cabecera-solida' : ''}">
+  <div class="cabecera-fila">
+    <a class="logotipo" href="${BASE}/" aria-label="VILLVERG, inicio">VILLVERG</a>
+    <nav class="menu" aria-label="Principal">
+      <a class="menu-opcional" href="${BASE}/#marcas">Marcas</a>
+      <a class="menu-opcional" href="${BASE}/#empresa">La empresa</a>
+      <a href="${BASE}/#contacto">Contacto</a>
+      <a class="menu-telefono" href="tel:${EMPRESA.telefono}">${EMPRESA.telefonoVisible}</a>
+    </nav>
+  </div>
 </header>
 `;
 }
@@ -110,7 +115,8 @@ function pie() {
   const anio = new Date().getFullYear();
   return `
 <footer class="pie">
-  <div class="contenedor pie-rejilla">
+  <div class="contenedor pie-fila">
+    <a class="logotipo" href="${BASE}/">VILLVERG</a>
     <p>© ${anio} ${EMPRESA.razonSocial}, CIF ${EMPRESA.cif}. ${EMPRESA.localidad}, Tenerife.</p>
     <nav aria-label="Información legal">
       <a href="${BASE}/aviso-legal.html">Aviso legal</a>
@@ -123,90 +129,105 @@ function pie() {
 `;
 }
 
-const SITIOS_MAPA = [
-  { x: 528, y: 300, titulo: 'Granadilla de Abona', detalle: 'Base de #Okservice.es', lado: 'izq' },
-  { x: 368, y: 446, titulo: 'Las Chafiras', detalle: "Domicilio social y Villa's Properties", lado: 'izq' },
-];
+const IMG = `${BASE}/assets/img`;
 
 function paginaInicio() {
+  const precarga = `
+<link rel="preload" as="image" href="${IMG}/portada-1400.webp" imagesrcset="${IMG}/portada-movil-900.webp 900w, ${IMG}/portada-1400.webp 1400w, ${IMG}/portada-2400.webp 2400w" imagesizes="(min-width: 1200px) 2400px, 100vw" fetchpriority="high">`;
   return `${head({
-    titulo: "VILLVERG · La empresa del sur de Tenerife detrás de #Okservice.es y Villa's Properties",
-    descripcion: `${EMPRESA.razonSocial} (CIF ${EMPRESA.cif}) es una empresa de San Miguel de Abona, Tenerife. Trabaja con dos marcas: #Okservice.es, electricista autorizado, y Villa's Properties, inmobiliaria.`,
+    titulo: "VILLVERG · Electricidad y vivienda en el sur de Tenerife",
+    descripcion: `${EMPRESA.razonSocial} (CIF ${EMPRESA.cif}) es la empresa de San Miguel de Abona, Tenerife, detrás de #Okservice.es, electricista autorizado, y Villa's Properties, inmobiliaria.`,
     ruta: '/',
     schema: schemaOrganizacion(),
+    precarga,
   })}
 ${cabecera()}
 <main id="contenido">
 
   <section class="portada" aria-labelledby="h-portada">
+    <picture class="portada-foto">
+      <source media="(max-width: 719px)" srcset="${IMG}/portada-movil-900.webp">
+      <img src="${IMG}/portada-1400.webp" srcset="${IMG}/portada-1400.webp 1400w, ${IMG}/portada-2400.webp 2400w" sizes="(min-width: 1200px) 2400px, 100vw" width="2400" height="1352" alt="Campo de golf de Amarilla junto al mar, en San Miguel de Abona" fetchpriority="high">
+    </picture>
     <div class="portada-texto">
-      <h1 id="h-portada">Una empresa del sur de Tenerife</h1>
-      <p class="entradilla">Hacemos instalaciones eléctricas y vendemos casas, cada cosa con su nombre. Detrás de los dos está VILLVERG.</p>
+      <h1 id="h-portada">Electricidad y vivienda en el sur de Tenerife</h1>
+      <p class="portada-entradilla">Una sola empresa con dos oficios: instalamos la luz de tu casa y te ayudamos a comprarla o venderla.</p>
       <div class="portada-acciones">
-        <a class="boton boton-lleno" href="#marcas">Conocer las marcas</a>
-        <a class="boton boton-hueco" href="#contacto">Contactar</a>
+        <a class="boton boton-claro" href="https://okservice.es/" rel="noopener">Ir a #Okservice.es</a>
+        <a class="boton boton-borde" href="https://villasproperties.es/" rel="noopener">Ir a Villa's Properties</a>
       </div>
     </div>
-    <div class="portada-mapa">
-      ${mapa(SITIOS_MAPA)}
-    </div>
+    <p class="portada-pie">Amarilla Golf, San Miguel de Abona</p>
   </section>
 
-  <section class="marcas" id="marcas" aria-labelledby="h-marcas">
+  <section class="presentacion" aria-labelledby="h-presentacion">
     <div class="contenedor">
-      <h2 class="titulo-seccion" id="h-marcas">Dos oficios, una sola firma</h2>
-      <p class="subtitulo-seccion">Cada marca tiene su web y su equipo. Quien responde de todas es la misma sociedad, con el mismo CIF.</p>
+      <div class="presentacion-rejilla">
+        <h2 id="h-presentacion">Detrás de cada marca, la misma firma</h2>
+        <p>VILLVERG trabaja con un nombre para cada oficio. Ninguna marca es una empresa aparte: todas facturan desde esta sociedad, con el mismo CIF y la misma responsabilidad.</p>
+      </div>
+      <dl class="cifras">
+        <div><dt>Instalador autorizado en baja tensión</dt><dd>nº ${EMPRESA.instalador}</dd></div>
+        <div><dt>Domicilio social</dt><dd>Las Chafiras, San Miguel</dd></div>
+        <div><dt>CIF</dt><dd>${EMPRESA.cif}</dd></div>
+      </dl>
     </div>
-
-    <article class="marca marca-okservice" aria-labelledby="h-okservice">
-      <div class="marca-interior">
-        <div>
-          <h3 class="marca-nombre" id="h-okservice">#Okservice.es</h3>
-          <p class="marca-oficio">Electricista autorizado en Tenerife Sur</p>
-        </div>
-        <div>
-          <p>Averías los siete días, boletines eléctricos, cuadros, puntos de recarga para coche eléctrico y placas solares. El precio se dice antes de salir.</p>
-          <dl class="marca-hechos">
-            <div><dt>Instalador autorizado en baja tensión</dt><dd>nº ${EMPRESA.instalador}</dd></div>
-            <div><dt>Base</dt><dd>Granadilla de Abona</dd></div>
-          </dl>
-          <a class="boton" href="https://okservice.es/" rel="noopener">Ir a okservice.es</a>
-        </div>
-      </div>
-    </article>
-
-    <article class="marca marca-villas" aria-labelledby="h-villas">
-      <div class="marca-interior">
-        <div>
-          <h3 class="marca-nombre" id="h-villas">Villa's Properties</h3>
-          <p class="marca-oficio">Inmobiliaria en el sur de Tenerife</p>
-        </div>
-        <div>
-          <p>Compra, venta e inversión en vivienda. Las valoraciones se apoyan en precios escriturados y en Catastro, no solo en lo que piden los anuncios.</p>
-          <dl class="marca-hechos">
-            <div><dt>Zona</dt><dd>Sur de Tenerife</dd></div>
-            <div><dt>Oficina</dt><dd>Las Chafiras</dd></div>
-          </dl>
-          <a class="boton" href="https://villasproperties.es/" rel="noopener">Ir a villasproperties.es</a>
-        </div>
-      </div>
-    </article>
-
-    <p class="marca-menor">También es nuestra <strong>biovida.shop</strong>, la tienda online del grupo.</p>
   </section>
 
-  <section class="sociedad" id="sociedad" aria-labelledby="h-sociedad">
-    <div class="contenedor sociedad-rejilla">
+  <div id="marcas">
+    <article class="marca" aria-labelledby="h-okservice">
+      <figure class="marca-foto">
+        <img src="${IMG}/okservice-1280.webp" srcset="${IMG}/okservice-800.webp 800w, ${IMG}/okservice-1280.webp 1280w" sizes="(min-width: 900px) 55vw, 100vw" width="1280" height="720" loading="lazy" alt="Placas solares en una azotea">
+      </figure>
+      <div class="marca-texto">
+        <h3 id="h-okservice">#Okservice.es</h3>
+        <p class="marca-oficio">Electricista autorizado</p>
+        <p>Averías los siete días, boletines eléctricos, cuadros, puntos de recarga para coche eléctrico y placas solares en el sur de Tenerife. El precio se dice antes de salir.</p>
+        <dl class="marca-datos">
+          <div><dt>Empresa instaladora</dt><dd>nº ${EMPRESA.instalador}</dd></div>
+          <div><dt>Base</dt><dd>Granadilla de Abona</dd></div>
+        </dl>
+        <a class="boton boton-oscuro" href="https://okservice.es/" rel="noopener">Ir a okservice.es</a>
+      </div>
+    </article>
+
+    <article class="marca marca-invertida" aria-labelledby="h-villas">
+      <figure class="marca-foto">
+        <img src="${IMG}/villas-1500.webp" srcset="${IMG}/villas-800.webp 800w, ${IMG}/villas-1500.webp 1500w" sizes="(min-width: 900px) 55vw, 100vw" width="1500" height="1000" loading="lazy" alt="Terraza con vistas a la piscina y las palmeras del Residencial Biltmore, en Las Chafiras">
+      </figure>
+      <div class="marca-texto">
+        <h3 id="h-villas">Villa's Properties</h3>
+        <p class="marca-oficio">Inmobiliaria</p>
+        <p>Compra, venta e inversión en vivienda en el sur de Tenerife. Las valoraciones se apoyan en precios escriturados y en Catastro, no solo en lo que piden los anuncios.</p>
+        <dl class="marca-datos">
+          <div><dt>Zona</dt><dd>Sur de Tenerife</dd></div>
+          <div><dt>Oficina</dt><dd>Las Chafiras</dd></div>
+        </dl>
+        <a class="boton boton-oscuro" href="https://villasproperties.es/" rel="noopener">Ir a villasproperties.es</a>
+      </div>
+    </article>
+
+    <div class="otras-marcas">
+      <div class="contenedor"><p>También forma parte de VILLVERG <strong>biovida.shop</strong>, la tienda online del grupo.</p></div>
+    </div>
+  </div>
+
+  <figure class="banda">
+    <img src="${IMG}/costa-1500.webp" srcset="${IMG}/costa-800.webp 800w, ${IMG}/costa-1500.webp 1500w" sizes="100vw" width="1500" height="1000" loading="lazy" alt="Jardines y piscina en Torviscas, Adeje, con La Gomera al fondo">
+    <figcaption>Torviscas, Adeje. Al fondo, La Gomera.</figcaption>
+  </figure>
+
+  <section class="empresa" id="empresa" aria-labelledby="h-empresa">
+    <div class="contenedor empresa-rejilla">
       <div>
-        <h2 class="titulo-seccion" id="h-sociedad">La empresa</h2>
-        <p>VILLVERG es una sociedad limitada con domicilio en Las Chafiras. Las marcas no son empresas aparte: facturan todas desde la misma sociedad, con una sola numeración.</p>
-        <p>Si eres proveedor, banco o colaborador y necesitas los datos de facturación, son estos.</p>
+        <h2 id="h-empresa">La empresa</h2>
+        <p>VILLVERG es una sociedad limitada con domicilio en Las Chafiras, San Miguel de Abona. Si eres proveedor, banco o colaborador, estos son sus datos.</p>
       </div>
       <dl class="ficha">
         <div><dt>Razón social</dt><dd>${EMPRESA.razonSocial}</dd></div>
         <div><dt>CIF</dt><dd>${EMPRESA.cif}</dd></div>
-        <div><dt>Registro</dt><dd>${EMPRESA.registro}</dd></div>
         <div><dt>Domicilio social</dt><dd>${EMPRESA.domicilio}, ${EMPRESA.cp} ${EMPRESA.localidad} (${EMPRESA.provincia})</dd></div>
+        <div><dt>Registro</dt><dd>${EMPRESA.registro}. IRUS ${EMPRESA.irus}</dd></div>
         <div><dt>Empresa instaladora</dt><dd>Autorizada en baja tensión, nº ${EMPRESA.instalador}, Gobierno de Canarias</dd></div>
         <div><dt>Impuesto indirecto</dt><dd>IGIC (Canarias)</dd></div>
       </dl>
@@ -214,11 +235,18 @@ ${cabecera()}
   </section>
 
   <section class="contacto" id="contacto" aria-labelledby="h-contacto">
-    <div class="contenedor">
-      <h2 class="titulo-seccion" id="h-contacto">Escríbenos</h2>
-      <p>Para un trabajo eléctrico o una casa, lo más rápido es la web de cada marca. Para lo demás:</p>
-      <a class="contacto-correo" href="mailto:${EMPRESA.email}">${EMPRESA.email}</a>
-      <p class="contacto-telefono">o llama al <a href="tel:${EMPRESA.telefono}">${EMPRESA.telefonoVisible}</a></p>
+    <div class="contenedor contacto-rejilla">
+      <div>
+        <h2 id="h-contacto">Hablemos</h2>
+        <p>Para un trabajo eléctrico o una vivienda, lo más rápido es la web de cada marca. Para todo lo demás, escríbenos.</p>
+        <a class="contacto-correo" href="mailto:${EMPRESA.email}">${EMPRESA.email}</a>
+      </div>
+      <dl class="contacto-lista">
+        <div><dt>Teléfono</dt><dd><a href="tel:${EMPRESA.telefono}">${EMPRESA.telefonoVisible}</a></dd></div>
+        <div><dt>Electricidad</dt><dd><a href="https://okservice.es/" rel="noopener">okservice.es</a></dd></div>
+        <div><dt>Vivienda</dt><dd><a href="https://villasproperties.es/" rel="noopener">villasproperties.es</a></dd></div>
+        <div><dt>Domicilio</dt><dd>Las Chafiras, ${EMPRESA.cp} ${EMPRESA.localidad}</dd></div>
+      </dl>
     </div>
   </section>
 
@@ -228,7 +256,7 @@ ${pie()}`;
 
 function paginaTexto({ archivo, titulo, descripcion, entradilla, cuerpo }) {
   return [archivo, `${head({ titulo: `${titulo} · VILLVERG`, descripcion, ruta: `/${archivo}`, indexable: false })}
-${cabecera()}
+${cabecera({ solida: true })}
 <main id="contenido" class="legal">
   <div class="contenedor">
     <h1>${titulo}</h1>
@@ -300,17 +328,17 @@ ${DATOS_TITULAR}
 });
 
 const PAGINA_404 = ['404.html', `${head({ titulo: 'Página no encontrada · VILLVERG', descripcion: 'Esta página no existe.', ruta: '/404.html', indexable: false })}
-${cabecera()}
+${cabecera({ solida: true })}
 <main id="contenido" class="error">
   <div class="contenedor">
     <h1>Esta página no existe</h1>
     <p>Puede que el enlace esté mal escrito o que la página se haya movido.</p>
-    <p><a class="boton boton-lleno" href="${BASE}/">Volver al inicio</a></p>
+    <p><a class="boton boton-oscuro" href="${BASE}/">Volver al inicio</a></p>
   </div>
 </main>
 ${pie()}`];
 
-const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#23272a"/><path d="M14 16h9l9 24 9-24h9L37 50h-10Z" fill="#d9a21b"/></svg>
+const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0f2a3d"/><path d="M14 16h9l9 24 9-24h9L37 50h-10Z" fill="#d2b07a"/></svg>
 `;
 
 const SITEMAP = `<?xml version="1.0" encoding="UTF-8"?>
