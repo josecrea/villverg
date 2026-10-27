@@ -29,6 +29,10 @@ const EMPRESA = {
   telefonoVisible: '679 32 52 22',
   email: 'info@villverg.com',
   instalador: '25094',
+  // Datos registrales tal como figuran en el pie de factura de Odoo (res.company 1).
+  // La hoja «TF» corresponde al Registro Mercantil de Santa Cruz de Tenerife.
+  registro: 'Registro Mercantil de Santa Cruz de Tenerife, sección 8, hoja TF-73004, inscripción 2 (27/09/2024)',
+  irus: '1000429977910',
 };
 
 const escapar = (s) => String(s)
@@ -201,6 +205,7 @@ ${cabecera()}
       <dl class="ficha">
         <div><dt>Razón social</dt><dd>${EMPRESA.razonSocial}</dd></div>
         <div><dt>CIF</dt><dd>${EMPRESA.cif}</dd></div>
+        <div><dt>Registro</dt><dd>${EMPRESA.registro}</dd></div>
         <div><dt>Domicilio social</dt><dd>${EMPRESA.domicilio}, ${EMPRESA.cp} ${EMPRESA.localidad} (${EMPRESA.provincia})</dd></div>
         <div><dt>Empresa instaladora</dt><dd>Autorizada en baja tensión, nº ${EMPRESA.instalador}, Gobierno de Canarias</dd></div>
         <div><dt>Impuesto indirecto</dt><dd>IGIC (Canarias)</dd></div>
@@ -237,6 +242,7 @@ ${pie()}`];
 const DATOS_TITULAR = `    <ul>
       <li>Denominación social: ${EMPRESA.razonSocial}</li>
       <li>CIF: ${EMPRESA.cif}</li>
+      <li>Inscrita en el ${EMPRESA.registro}. IRUS ${EMPRESA.irus}</li>
       <li>Domicilio social: ${EMPRESA.domicilio}, ${EMPRESA.cp} ${EMPRESA.localidad}, ${EMPRESA.provincia}</li>
       <li>Teléfono: ${EMPRESA.telefonoVisible}</li>
       <li>Correo: <a href="mailto:${EMPRESA.email}">${EMPRESA.email}</a></li>
