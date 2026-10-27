@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-27T18:00:00Z",
+  "title": "Design System: VILLVERG",
+  "extensions": {
+    "colorMeta": {
+      "noche": { "role": "primary", "displayName": "Azul Noche Atlántico", "canonical": "#0f2a3d", "tonalRamp": ["#050f17", "#0a1d2b", "#0f2a3d", "#2a4a63", "#4a6d88", "#7b97ae", "#b3c5d3", "#e1e9ef"] },
+      "noche-hondo": { "role": "primary", "displayName": "Azul Noche Hondo", "canonical": "#0a1d2b", "tonalRamp": ["#030a10", "#06121b", "#0a1d2b", "#1f3a50", "#3f5f78", "#6f8aa0", "#aabccb", "#dde6ed"] },
+      "blanco": { "role": "neutral", "displayName": "Blanco Cálido", "canonical": "#fbfaf7", "tonalRamp": ["#4b4a46", "#6b6a65", "#8b8a84", "#adaca6", "#cbcac4", "#e0dfd9", "#f1f0ec", "#fbfaf7"] },
+      "piedra": { "role": "neutral", "displayName": "Piedra Clara", "canonical": "#ece7de", "tonalRamp": ["#4a463e", "#6a655b", "#8b857a", "#aca699", "#c7c1b5", "#dad5ca", "#ece7de", "#f6f3ed"] },
+      "laton": { "role": "secondary", "displayName": "Latón", "canonical": "#7a5c2e", "tonalRamp": ["#2b2110", "#47361a", "#654d27", "#7a5c2e", "#a98a58", "#c4aa7f", "#ddcaa7", "#f0e6d3"] },
+      "laton-claro": { "role": "secondary", "displayName": "Latón Claro", "canonical": "#d2b07a", "tonalRamp": ["#4d3a1c", "#735a2e", "#98794a", "#b8955e", "#d2b07a", "#e1c79d", "#eddcc0", "#f7efe1"] },
+      "tinta": { "role": "neutral", "displayName": "Tinta", "canonical": "#1d2329", "tonalRamp": ["#0b0e11", "#12161a", "#1d2329", "#3a424a", "#59626b", "#8a9299", "#bcc1c6", "#e4e6e8"] },
+      "tinta-suave": { "role": "neutral", "displayName": "Tinta Suave", "canonical": "#55606a", "tonalRamp": ["#1f2429", "#323a41", "#55606a", "#6f7a84", "#8a949d", "#a9b1b8", "#cbd0d4", "#e8eaec"] },
+      "linea": { "role": "neutral", "displayName": "Filete", "canonical": "rgba(15, 42, 61, 0.14)", "tonalRamp": ["rgba(15,42,61,0.9)", "rgba(15,42,61,0.7)", "rgba(15,42,61,0.5)", "rgba(15,42,61,0.35)", "rgba(15,42,61,0.25)", "rgba(15,42,61,0.14)", "rgba(15,42,61,0.08)", "rgba(15,42,61,0.04)"] },
+      "linea-clara": { "role": "neutral", "displayName": "Filete Claro", "canonical": "rgba(251, 250, 247, 0.22)", "tonalRamp": ["rgba(251,250,247,0.9)", "rgba(251,250,247,0.7)", "rgba(251,250,247,0.5)", "rgba(251,250,247,0.35)", "rgba(251,250,247,0.28)", "rgba(251,250,247,0.22)", "rgba(251,250,247,0.12)", "rgba(251,250,247,0.06)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Solo el titular de la portada, Bodoni Moda 600, máximo 14ch." },
+      "headline": { "displayName": "Headline", "purpose": "h2 de sección, nombre de marca y h1 de páginas legales y 404." },
+      "title": { "displayName": "Title", "purpose": "Entradillas y oficio de marca (serif latón)." },
+      "body": { "displayName": "Body", "purpose": "Texto corrido en Manrope, máximo 64ch." },
+      "label": { "displayName": "Label", "purpose": "Botones, menú, términos de ficha y pies de foto." }
+    },
+    "shadows": [
+      { "name": "texto-titular", "value": "0 2px 24px rgba(10, 29, 43, 0.35)", "purpose": "Legibilidad del titular de portada sobre foto; sombra de texto difusa, nunca de caja." },
+      { "name": "texto-pie-foto", "value": "0 1px 14px rgba(10, 29, 43, 0.85)", "purpose": "Pies de foto sobre la banda de paisaje." }
+    ],
+    "motion": [
+      { "name": "ease", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Easing único: botones 0,35s, subrayado de menú 0,45s, zoom de foto de marca 1,4s." },
+      { "name": "entrada-portada", "value": "asentar 2.2s (foto, scale 1.06 a 1) y emerger 1.2s (texto, 14px), escalonado 0.12s", "purpose": "Única animación del sitio; se desactiva con prefers-reduced-motion." }
+    ],
+    "breakpoints": [
+      { "name": "menu-opcional", "value": "720px" },
+      { "name": "marca-partida", "value": "900px" },
+      { "name": "dos-columnas", "value": "960px" },
+      { "name": "ficha", "value": "600px" },
+      { "name": "movil-estrecho", "value": "420px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón claro",
+      "kind": "button",
+      "refersTo": "button-claro",
+      "description": "Acción primaria sobre foto o fondo noche.",
+      "html": "<a class=\"ds-boton ds-boton-claro\" href=\"#\">Ir a #Okservice.es</a>",
+      "css": ".ds-boton { display:inline-flex; align-items:center; justify-content:center; min-height:52px; padding:0.85rem 1.6rem; font-family:var(--sans, 'Manrope', Arial, sans-serif); font-size:0.9375rem; font-weight:600; letter-spacing:0.01em; text-decoration:none; border:1px solid transparent; transition:background-color .35s cubic-bezier(.16,1,.3,1), color .35s cubic-bezier(.16,1,.3,1), border-color .35s cubic-bezier(.16,1,.3,1); } .ds-boton-claro { background:#fbfaf7; color:#0f2a3d; } .ds-boton-claro:hover { background:#d2b07a; } .ds-boton:focus-visible { outline:2px solid #d2b07a; outline-offset:4px; }"
+    },
+    {
+      "name": "Botón de borde",
+      "kind": "button",
+      "refersTo": "button-borde",
+      "description": "Acción secundaria sobre foto.",
+      "html": "<span style=\"display:inline-block;padding:1.5rem;background:#0f2a3d\"><a class=\"ds-boton ds-boton-borde\" href=\"#\">Ir a Villa's Properties</a></span>",
+      "css": ".ds-boton { display:inline-flex; align-items:center; justify-content:center; min-height:52px; padding:0.85rem 1.6rem; font-family:'Manrope', Arial, sans-serif; font-size:0.9375rem; font-weight:600; letter-spacing:0.01em; text-decoration:none; border:1px solid transparent; transition:background-color .35s cubic-bezier(.16,1,.3,1), color .35s cubic-bezier(.16,1,.3,1), border-color .35s cubic-bezier(.16,1,.3,1); } .ds-boton-borde { border-color:rgba(251,250,247,0.75); color:#fbfaf7; } .ds-boton-borde:hover { background:#fbfaf7; color:#0f2a3d; border-color:#fbfaf7; } .ds-boton:focus-visible { outline:2px solid #d2b07a; outline-offset:4px; }"
+    },
+    {
+      "name": "Botón oscuro",
+      "kind": "button",
+      "refersTo": "button-oscuro",
+      "description": "Acción sobre fondos claros, al final de cada fila de marca.",
+      "html": "<a class=\"ds-boton ds-boton-oscuro\" href=\"#\">Ir a villasproperties.es</a>",
+      "css": ".ds-boton { display:inline-flex; align-items:center; justify-content:center; min-height:52px; padding:0.85rem 1.6rem; font-family:'Manrope', Arial, sans-serif; font-size:0.9375rem; font-weight:600; letter-spacing:0.01em; text-decoration:none; border:1px solid transparent; transition:background-color .35s cubic-bezier(.16,1,.3,1); } .ds-boton-oscuro { background:#0f2a3d; color:#fbfaf7; } .ds-boton-oscuro:hover { background:#0a1d2b; } .ds-boton:focus-visible { outline:2px solid #d2b07a; outline-offset:4px; }"
+    },
+    {
+      "name": "Navegación de cabecera",
+      "kind": "nav",
+      "refersTo": "none",
+      "description": "Logotipo espaciado y menú con subrayado que crece; teléfono tras filete vertical.",
+      "html": "<div class=\"ds-cab\"><a class=\"ds-logo\" href=\"#\">VILLVERG</a><nav class=\"ds-menu\"><a href=\"#\">Marcas</a><a href=\"#\">La empresa</a><a href=\"#\">Contacto</a><a class=\"ds-tel\" href=\"#\">679 32 52 22</a></nav></div>",
+      "css": ".ds-cab { display:flex; align-items:center; justify-content:space-between; gap:2rem; padding:1.5rem 2rem; background:#0f2a3d; color:#fbfaf7; } .ds-logo { font-family:'Bodoni Moda', Didot, Georgia, serif; font-weight:600; font-size:1.45rem; letter-spacing:0.32em; text-decoration:none; color:inherit; line-height:1; } .ds-menu { display:flex; align-items:center; gap:2.25rem; font-family:'Manrope', Arial, sans-serif; font-size:0.9375rem; font-weight:500; } .ds-menu a { color:inherit; text-decoration:none; padding-block:0.35rem; background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat; transition:background-size .45s cubic-bezier(.16,1,.3,1); } .ds-menu a:hover { background-size:100% 1px; } .ds-menu .ds-tel { padding-left:2.25rem; border-left:1px solid rgba(251,250,247,0.35); font-variant-numeric:tabular-nums; } .ds-menu a:focus-visible { outline:2px solid #d2b07a; outline-offset:4px; }"
+    },
+    {
+      "name": "Fila de marca",
+      "kind": "card",
+      "refersTo": "marca-fila",
+      "description": "Componente firma: oficio en Bodoni latón, datos con filetes y botón oscuro sobre piedra.",
+      "html": "<article class=\"ds-marca\"><h3>Villa's Properties</h3><p class=\"ds-oficio\">Inmobiliaria</p><p>Compra, venta e inversión en vivienda en el sur de Tenerife.</p><dl class=\"ds-datos\"><div><dt>Zona</dt><dd>Sur de Tenerife</dd></div><div><dt>Oficina</dt><dd>Las Chafiras</dd></div></dl><a class=\"ds-boton-o\" href=\"#\">Ir a villasproperties.es</a></article>",
+      "css": ".ds-marca { background:#ece7de; padding:3.5rem 2.5rem; font-family:'Manrope', Arial, sans-serif; font-size:1.0625rem; line-height:1.65; color:#55606a; max-width:34rem; } .ds-marca h3 { font-family:'Bodoni Moda', Didot, Georgia, serif; font-weight:500; font-size:2.6rem; line-height:1.06; letter-spacing:-0.012em; color:#0f2a3d; margin:0 0 1.2rem; } .ds-oficio { font-family:'Bodoni Moda', Didot, Georgia, serif; font-size:1.3rem; color:#7a5c2e; margin:0 0 1.6rem; } .ds-datos { margin:2rem 0 2.4rem; border-top:1px solid rgba(15,42,61,0.14); } .ds-datos div { display:flex; justify-content:space-between; gap:1.5rem; padding:0.9rem 0; border-bottom:1px solid rgba(15,42,61,0.14); font-size:0.9375rem; } .ds-datos dt { color:#55606a; } .ds-datos dd { margin:0; font-weight:600; color:#0f2a3d; text-align:right; } .ds-boton-o { display:inline-flex; align-items:center; min-height:52px; padding:0.85rem 1.6rem; background:#0f2a3d; color:#fbfaf7; font-weight:600; font-size:0.9375rem; text-decoration:none; transition:background-color .35s cubic-bezier(.16,1,.3,1); } .ds-boton-o:hover { background:#0a1d2b; } .ds-boton-o:focus-visible { outline:2px solid #d2b07a; outline-offset:4px; }"
+    },
+    {
+      "name": "Ficha de datos",
+      "kind": "custom",
+      "refersTo": "none",
+      "description": "Lista de definición con filete superior noche para los datos de la sociedad.",
+      "html": "<dl class=\"ds-ficha\"><div><dt>Razón social</dt><dd>VILLVERG SOLUCIONES INTEGRALES SL</dd></div><div><dt>CIF</dt><dd>B19430115</dd></div><div><dt>Impuesto indirecto</dt><dd>IGIC (Canarias)</dd></div></dl>",
+      "css": ".ds-ficha { margin:0; border-top:1px solid #0f2a3d; font-family:'Manrope', Arial, sans-serif; font-size:1.0625rem; line-height:1.65; color:#1d2329; } .ds-ficha div { display:grid; grid-template-columns:11rem 1fr; gap:0.25rem 2rem; padding:1.15rem 0; border-bottom:1px solid rgba(15,42,61,0.14); } .ds-ficha dt { font-size:0.8125rem; font-weight:600; color:#55606a; padding-top:0.2rem; } .ds-ficha dd { margin:0; font-variant-numeric:tabular-nums; }"
+    },
+    {
+      "name": "Banda de contacto",
+      "kind": "custom",
+      "refersTo": "contacto-banda",
+      "description": "Sección en azul noche con correo en Bodoni y filete de latón claro.",
+      "html": "<section class=\"ds-contacto\"><h2>Hablemos</h2><a class=\"ds-correo\" href=\"#\">info@villverg.com</a><dl class=\"ds-lista\"><div><dt>Teléfono</dt><dd>679 32 52 22</dd></div><div><dt>Vivienda</dt><dd>villasproperties.es</dd></div></dl></section>",
+      "css": ".ds-contacto { background:#0f2a3d; color:#fbfaf7; padding:4rem 2.5rem; font-family:'Manrope', Arial, sans-serif; } .ds-contacto h2 { font-family:'Bodoni Moda', Didot, Georgia, serif; font-weight:500; font-size:3rem; line-height:1.06; margin:0 0 1.5rem; } .ds-correo { display:inline-block; font-family:'Bodoni Moda', Didot, Georgia, serif; font-size:2rem; color:inherit; text-decoration:none; padding-bottom:0.3rem; border-bottom:1px solid #d2b07a; transition:color .35s cubic-bezier(.16,1,.3,1); } .ds-correo:hover { color:#d2b07a; } .ds-correo:focus-visible { outline:2px solid #d2b07a; outline-offset:4px; } .ds-lista { margin:2.5rem 0 0; border-top:1px solid rgba(251,250,247,0.22); } .ds-lista div { display:flex; justify-content:space-between; gap:1.5rem; padding:1rem 0; border-bottom:1px solid rgba(251,250,247,0.22); font-size:0.9375rem; } .ds-lista dt { color:rgba(251,250,247,0.7); } .ds-lista dd { margin:0; font-variant-numeric:tabular-nums; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "El Registro con Vistas",
+    "overview": "Una sociedad seria que se deja ver con el paisaje delante. El sitio combina dos cosas que los grupos inmobiliarios premium (Engel & Völkers, Sotheby's International Realty, Lucas Fox) hacen bien: fotografía real y grande del sur de Tenerife a sangre, y la sobriedad de un documento mercantil, con datos comprobables en filetes finos. La portada es una foto con el titular en Bodoni; el resto alterna filas partidas foto/texto, una banda de paisaje y fichas de datos.\n\nLa densidad es baja y el aire es generoso (secciones de 5 a 10rem). La jerarquía sale de la escala: un serif de alto contraste muy grande frente a una sans de texto discreta. No hay tarjetas iguales en rejilla, ni insignias, ni sombras de caja, ni esquinas redondeadas. La marca reparte; no vende servicios, y el diseño debe dejarse leer como respaldo, no como protagonista.",
+    "keyCharacteristics": [
+      "Fotografía a sangre, sin marcos, sin sombras de caja, sin radios.",
+      "Bodoni Moda para titulares y cifras clave; Manrope para texto e interfaz.",
+      "Azul noche atlántico, blanco cálido, piedra clara; latón como único acento.",
+      "Datos en listas de definición (dl) con filetes finos, no en tarjetas.",
+      "Movimiento solo en la entrada de la portada y en transiciones de estado."
+    ],
+    "rules": [
+      { "name": "The One Metal Rule", "body": "El latón es el único acento y aparece en pequeñas dosis: un oficio, un filete, un foco. Nunca como relleno de superficie ni como segundo color de botón.", "section": "colors" },
+      { "name": "The Warm Paper Rule", "body": "Los fondos claros son Blanco Cálido o Piedra; los textos sobre foto o noche son Blanco Cálido, no blanco puro.", "section": "colors" },
+      { "name": "The Serif Speaks Rule", "body": "Bodoni solo para titulares, cifras clave, oficio de marca, correo destacado y logotipo. Nada de interfaz (botones, menú, etiquetas) en serif.", "section": "typography" },
+      { "name": "The Lining Figures Rule", "body": "Cifras de datos con tabular-nums o lining-nums para que CIF, teléfono y registro se lean como documento.", "section": "typography" },
+      { "name": "The Split Row Rule", "body": "Las marcas se presentan en filas partidas foto/texto que alternan lado y fondo (piedra, blanco). Nunca en rejilla de tarjetas iguales.", "section": "layout" },
+      { "name": "The Flat Paper Rule", "body": "Superficies planas en reposo y en hover. El hover cambia color de fondo, de texto o de filete; el único desplazamiento es el zoom lento de la foto de marca (scale 1.025 en 1.4s).", "section": "elevation" }
+    ],
+    "dos": [
+      "Do abrir cada sección con fotografía real del sur de Tenerife a sangre o con un titular Bodoni de gran escala sobre aire.",
+      "Do escribir «#Okservice.es» siempre con almohadilla y con .es, y «VILLVERG SOLUCIONES INTEGRALES SL» como razón social exacta.",
+      "Do presentar datos de la sociedad como listas de definición con filetes de 1px, no como tarjetas.",
+      "Do mantener esquina recta (0px) y superficies planas; que cambie el color, no la sombra.",
+      "Do reservar el latón para una sola pieza pequeña por zona: oficio, filete o foco.",
+      "Do respetar `prefers-reduced-motion`: la animación de entrada de la portada (2,2s la foto, 1,2s el texto, escalonado de 0,12s) es la única del sitio."
+    ],
+    "donts": [
+      "Don't usar rejillas de tarjetas iguales ni insignias sobre la portada.",
+      "Don't añadir sombras de caja, radios ni bordes decorativos a fotos y botones.",
+      "Don't usar Bodoni para interfaz ni cuerpo de texto.",
+      "Don't introducir un segundo acento junto al latón, ni blanco puro ni grises neutros.",
+      "Don't inventar cifras, trayectoria ni testimonios: la ficha solo lleva datos comprobables."
+    ]
+  }
+}
