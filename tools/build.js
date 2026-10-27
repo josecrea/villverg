@@ -9,7 +9,11 @@ const fs = require('fs');
 const path = require('path');
 
 const RAIZ = path.join(__dirname, '..');
-const SITIO = 'https://villverg.com';
+// Se sirve como sitio de proyecto de GitHub Pages: josecrea.github.io/villverg.
+// Todas las rutas internas llevan BASE delante; si algún día se apunta villverg.com,
+// basta con BASE = '' y SITIO = 'https://villverg.com' (y volver a añadir el CNAME).
+const BASE = '/villverg';
+const SITIO = `https://josecrea.github.io${BASE}`;
 
 // Datos de la sociedad. Única fuente de verdad del sitio.
 const EMPRESA = {
@@ -106,10 +110,10 @@ function head({ titulo, descripcion, ruta, indexable = true, schema = null }) {
 <meta property="og:description" content="${escapar(descripcion)}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:image" content="${SITIO}/assets/img/hero-poster.jpg">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/assistant-latin.woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.css">
-<link rel="stylesheet" href="/assets/css/villverg.css">${ld}
+<link rel="icon" href="${BASE}/favicon.svg" type="image/svg+xml">
+<link rel="preload" as="font" type="font/woff2" href="${BASE}/assets/fonts/assistant-latin.woff2" crossorigin>
+<link rel="stylesheet" href="${BASE}/assets/css/site.css">
+<link rel="stylesheet" href="${BASE}/assets/css/villverg.css">${ld}
 </head>`;
 }
 
@@ -122,12 +126,12 @@ function cabecera(activa) {
 
 <header class="site-head">
   <div class="nav-pill">
-    <a class="brand brand-texto" href="/" aria-label="VILLVERG — inicio">VILL<span>VERG</span></a>
+    <a class="brand brand-texto" href="${BASE}/" aria-label="VILLVERG — inicio">VILL<span>VERG</span></a>
     <nav class="site-nav" aria-label="Navegación principal">
-      ${enlace('/', 'Inicio', 'inicio')}
-      <a href="/#marcas">Marcas</a>
-      <a href="/#sociedad" class="is-optional">La sociedad</a>
-      <a href="/#contacto" class="is-optional">Contacto</a>
+      ${enlace(`${BASE}/`, 'Inicio', 'inicio')}
+      <a href="${BASE}/#marcas">Marcas</a>
+      <a href="${BASE}/#sociedad" class="is-optional">La sociedad</a>
+      <a href="${BASE}/#contacto" class="is-optional">Contacto</a>
       <a class="btn btn-accion btn-sm" href="tel:${EMPRESA.telefono}">Llamar</a>
     </nav>
   </div>
@@ -145,7 +149,7 @@ function pie() {
   <div class="wrap">
     <div class="foot-top">
       <div class="foot-marca">
-        <a class="brand-texto" href="/">VILL<span>VERG</span></a>
+        <a class="brand-texto" href="${BASE}/">VILL<span>VERG</span></a>
         <p>Una sola sociedad en Tenerife Sur detrás de varias marcas: instalaciones eléctricas, inmobiliaria y comercio online.</p>
         <ul class="foot-atajos">
           <li><a href="tel:${EMPRESA.telefono}"><strong>${EMPRESA.telefonoVisible}</strong></a></li>
@@ -162,8 +166,8 @@ function pie() {
         <div>
           <h2>Información legal</h2>
           <ul>
-            <li><a href="/aviso-legal.html">Aviso legal</a></li>
-            <li><a href="/privacidad.html">Política de privacidad</a></li>
+            <li><a href="${BASE}/aviso-legal.html">Aviso legal</a></li>
+            <li><a href="${BASE}/privacidad.html">Política de privacidad</a></li>
           </ul>
         </div>
       </div>
@@ -358,19 +362,13 @@ ${cabecera(null)}
       <p class="eyebrow">Error 404</p>
       <h1 class="h-404">Esta página no existe</h1>
       <p>Puede que el enlace esté mal escrito o que la página se haya movido.</p>
-      <div class="hero-actions"><a class="btn btn-accion" href="/">Volver al inicio</a></div>
+      <div class="hero-actions"><a class="btn btn-accion" href="${BASE}/">Volver al inicio</a></div>
     </div>
   </section>
 </main>
 ${pie()}`];
 
 const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#111827"/><path d="M14 16h9l9 24 9-24h9L37 50h-10Z" fill="#f1de27"/></svg>
-`;
-
-const ROBOTS = `User-agent: *
-Allow: /
-
-Sitemap: ${SITIO}/sitemap.xml
 `;
 
 const SITEMAP = `<?xml version="1.0" encoding="UTF-8"?>
@@ -398,10 +396,8 @@ const SALIDAS = [
   PRIVACIDAD,
   PAGINA_404,
   ['favicon.svg', FAVICON],
-  ['robots.txt', ROBOTS],
   ['sitemap.xml', SITEMAP],
   ['llms.txt', LLMS],
-  ['CNAME', 'villverg.com\n'],
   ['.nojekyll', ''],
 ];
 

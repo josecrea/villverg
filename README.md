@@ -14,7 +14,7 @@ Genera en la raíz `index.html`, `aviso-legal.html`, `privacidad.html`, `404.htm
 
 ## Alojamiento
 
-GitHub Pages desde `main` (raíz). Dominio propio `villverg.com` por `CNAME`. DNS en IONOS:
+GitHub Pages desde `main` (raíz). Sitio de proyecto: **https://josecrea.github.io/villverg/** (`BASE` en `tools/build.js`). Si un día se quiere `villverg.com`: `BASE = ''`, añadir `CNAME` y estos DNS en IONOS:
 
 | Tipo | Host | Valor |
 |------|------|-------|
