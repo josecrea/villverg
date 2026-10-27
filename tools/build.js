@@ -25,7 +25,7 @@ const EMPRESA = {
   provincia: 'Santa Cruz de Tenerife',
   telefono: '+34679325222',
   telefonoVisible: '679 32 52 22',
-  email: 'villverg@gmail.com',
+  email: 'info@villverg.com',
 };
 
 const MARCAS = [
