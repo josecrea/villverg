@@ -9,11 +9,11 @@ const fs = require('fs');
 const path = require('path');
 
 const RAIZ = path.join(__dirname, '..');
-// Se sirve como sitio de proyecto de GitHub Pages: josecrea.github.io/villverg.
-// Todas las rutas internas llevan BASE delante; si algún día se apunta villverg.com,
-// basta con BASE = '' y SITIO = 'https://villverg.com' (y volver a añadir el CNAME).
-const BASE = '/villverg';
-const SITIO = `https://josecrea.github.io${BASE}`;
+// Se sirve en https://villverg.com (GitHub Pages con dominio propio; el fichero CNAME
+// fija el dominio). Si alguna vez vuelve a josecrea.github.io/villverg: BASE = '/villverg',
+// SITIO = `https://josecrea.github.io${BASE}` y borrar el CNAME.
+const BASE = '';
+const SITIO = 'https://villverg.com';
 
 // Datos de la sociedad: única fuente de verdad del sitio. Los legales son los mismos
 // que publican okservice.es y villasproperties.es, porque es la misma empresa.
