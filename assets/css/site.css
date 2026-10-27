@@ -1,0 +1,629 @@
+/* Assistant autoalojada, en vez de la hoja de fonts.googleapis.com.
+   PageSpeed medía 380 ms de bloqueo de renderizado: el navegador tenía que resolver
+   dos dominios de terceros y esperar una hoja de 235 B solo para enterarse de qué
+   ficheros pedir. Aquí la declaración viaja dentro del CSS que ya se descarga.
+   Es UNA fuente variable (200-800), no cinco ficheros: Google devolvía el mismo woff2
+   para cada peso y se comprobó por hash. De paso queda cubierto el peso 500, que el
+   CSS usa y nunca se pedía — ese texto se dibujaba con un peso sintetizado.
+   33 KB los dos subconjuntos, y el navegador solo baja el que necesita.
+   SIL Open Font License 1.1 — ver assets/fonts/OFL.txt. */
+@font-face {
+  font-family: 'Assistant';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('../fonts/assistant-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Assistant';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('../fonts/assistant-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* #Okservice.es — hoja única.
+   Branding medido en producción el 8-10-2026, no inventado: amarillo #F1DE27 en
+   píldora de 800px, hero #111827 con foto a sangre, verde de acción #2F7D20,
+   tipografía Assistant. Ver .impeccable.md.
+
+   Dirección: industrial eléctrico. El amarillo es señalización, no decoración:
+   marca territorio (cabecera, franjas, el rayo) y nunca hace de botón. */
+
+:root {
+  --amarillo: #f1de27;
+  --amarillo-hover: #e6d117;
+  --gold: #f5a623;
+  --verde: #2f7d20;
+  --verde-hover: #276a1a;
+  --ink: #0f1923;
+  --ink-soft: #212529;
+  --slate: #5b6672;
+  --slate-soft: #8794a1;
+  --bg: #fffef7;          /* blanco tintado hacia el amarillo de marca */
+  --bg-warm: #faf8ec;
+  --night: #111827;        /* fondo del hero, tomado del s_cover original */
+  --night-2: #0b111d;
+  --border: rgba(15, 25, 35, 0.1);
+  --border-strong: rgba(15, 25, 35, 0.2);
+
+  --font: 'Assistant', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Escala con un salto real entre niveles (≈1.33): si los tamaños se parecen,
+     la jerarquía no se lee y hay que marcarla a base de negritas. */
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  --text-lg: clamp(1.1875rem, 1.05rem + 0.65vw, 1.45rem);
+  --text-h3: clamp(1.3rem, 1.12rem + 0.75vw, 1.7rem);
+  --text-h2: clamp(2.1rem, 1.35rem + 3.2vw, 3.9rem);
+  --text-h1: clamp(2.7rem, 1.5rem + 5.4vw, 5.4rem);
+  --text-figure: clamp(2.8rem, 1.8rem + 4.2vw, 4.8rem);
+
+  --radius: 14px;
+  --radius-sm: 6px;        /* el del botón verde original */
+  --pill: 800px;           /* el de la barra original */
+  --space-section: clamp(3.75rem, 2.8rem + 4.4vw, 8rem);
+  --gutter: clamp(1rem, 0.6rem + 2.2vw, 2.75rem);
+  --measure: 62ch;
+
+  --duration: 240ms;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow: 0 1px 2px rgba(15, 25, 35, 0.06), 0 14px 32px -20px rgba(15, 25, 35, 0.45);
+  --shadow-lift: 0 2px 6px rgba(15, 25, 35, 0.08), 0 28px 54px -26px rgba(15, 25, 35, 0.5);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink-soft);
+  font-family: var(--font);
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+/* El tracking se cierra a medida que el cuerpo crece: a 5 rem el espaciado normal
+   abre huecos entre letras, y a tamaño de texto cerrarlo lo haría ilegible. */
+h1, h2, h3 { font-family: var(--font); font-weight: 800; margin: 0; text-wrap: balance; }
+h1 { font-size: var(--text-h1); line-height: 1.02; letter-spacing: -0.038em; }
+h2 { font-size: var(--text-h2); line-height: 1.14; letter-spacing: -0.03em; }
+h3 { font-size: var(--text-h3); font-weight: 700; line-height: 1.2; letter-spacing: -0.018em; }
+p { margin: 0 0 1em; max-width: var(--measure); text-wrap: pretty; }
+/* Las cifras en tabla no bailan de ancho entre filas. */
+.price-figure, .price-inline, .price-card dd, .step::before { font-variant-numeric: tabular-nums; }
+a { color: inherit; }
+img { max-width: 100%; height: auto; display: block; }
+
+.wrap { width: min(100% - var(--gutter) * 2, 1200px); margin-inline: auto; }
+
+.eyebrow {
+  font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--slate); margin: 0 0 1rem;
+}
+
+.skip { position: absolute; left: -9999px; background: var(--ink); color: #fff; padding: 0.8rem 1.2rem; z-index: 99; }
+.skip:focus { left: 0; top: 0; }
+
+/* ---------- barra flotante en píldora: el elemento más reconocible ---------- */
+
+.site-head { position: sticky; top: 0; z-index: 50; padding: 1rem var(--gutter) 0; }
+
+.nav-pill {
+  display: flex; align-items: center; gap: clamp(0.5rem, 2vw, 1.75rem);
+  width: min(100% , 1320px); margin-inline: auto;
+  min-height: 58px; padding: 0.45rem 0.5rem 0.45rem 0.9rem;
+  background: var(--amarillo);
+  border-radius: var(--pill);
+  box-shadow: var(--shadow);
+}
+
+.brand { display: flex; align-items: center; flex-shrink: 0; }
+.brand img { height: 40px; width: auto; border-radius: 8px; }
+
+.site-nav { margin-left: auto; display: flex; align-items: center; gap: clamp(0.3rem, 1.4vw, 1.4rem); }
+.site-nav a { font-size: var(--text-sm); font-weight: 600; text-decoration: none; color: var(--ink); padding: 0.45rem 0.9rem; border-radius: var(--pill); transition: background-color var(--duration) var(--ease); }
+.site-nav a:hover { background: rgba(15, 25, 35, 0.1); }
+/* `.site-nav a` (0,1,1) pisaba a `.btn-accion` (0,1,0) y el boton verde del header
+   salia con texto tinta a 3,44:1. Se devuelve el blanco del sistema: 5,15:1. */
+.site-nav a.btn-accion { color: #fff; }
+.site-nav a.is-active { background: #fff; }
+@media (max-width: 800px) { .site-nav .is-optional { display: none; } }
+/* A 320 px el contenido medía 356: 36 px de desbordamiento y scroll horizontal en toda la
+   página, que infringe el criterio 1.4.10 (Reflow) de WCAG. No caben logo + «Inicio» +
+   «Servicios» + «Llamar» con 0,9rem de relleno a cada lado por enlace. Se aprieta el relleno
+   horizontal y el hueco en vez de esconder un enlace: la navegación se queda entera y el
+   relleno vertical —y con él los 24 px de alto táctil— no se toca. */
+@media (max-width: 400px) {
+  .site-nav { gap: 0.15rem; }
+  .site-nav a { padding-inline: 0.4rem; }
+  .site-nav a.btn-accion { padding-inline: 0.7rem; }
+}
+
+/* ---------- botones: el verde es el único de acción ---------- */
+
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.78rem 1.35rem; border: 2px solid transparent; border-radius: var(--radius-sm);
+  font: inherit; font-weight: 700; font-size: var(--text-sm); text-decoration: none; cursor: pointer;
+  /* Un botón nunca puede ser más ancho que lo que lo contiene. Sin esto, a 320 px
+     y MIENTRAS la fuente propia no ha cargado —`font-display: swap` dibuja con la
+     de respaldo, que es más ancha— «Llamar al 679 32 52 22» empujaba el documento
+     a 328 px y aparecía scroll horizontal. No era solo del 404: le pasaba a
+     cualquier botón largo en cualquier página, solo que nadie lo había medido en
+     ese instante. */
+  max-width: 100%;
+  transition: transform var(--duration) var(--ease), background-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+}
+.btn-accion { background: var(--verde); color: #fff; box-shadow: var(--shadow); }
+.btn-accion:hover { background: var(--verde-hover); transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+.btn-oscuro { background: var(--ink); color: #fff; }
+.btn-oscuro:hover { background: #000; transform: translateY(-2px); }
+.btn-linea { border-color: currentColor; color: var(--ink); }
+.btn-linea:hover { background: var(--ink); color: #fff; border-color: var(--ink); transform: translateY(-2px); }
+.btn-sm { padding: 0.5rem 1rem; font-size: var(--text-xs); }
+.btn:active { transform: translateY(0); }
+:where(a, button, summary):focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: var(--radius-sm); }
+
+/* ---------- hero a sangre con la foto del oficio ---------- */
+
+.hero {
+  position: relative; isolation: isolate;
+  margin-top: -74px; padding: calc(74px + clamp(4rem, 3rem + 7vw, 9rem)) 0 clamp(3.5rem, 2.5rem + 5vw, 7rem);
+  background: var(--night);
+  color: #fff;
+}
+/* El poster va de fondo CSS y es el LCP: se pinta aunque el vídeo no llegue a
+   reproducirse (datos limitados, códec no soportado, autoplay bloqueado). */
+.hero::before {
+  content: ''; position: absolute; inset: 0; z-index: -3;
+  background: url('../img/hero-poster.jpg') center center / cover no-repeat;
+}
+.hero-video {
+  position: absolute; inset: 0; z-index: -2;
+  width: 100%; height: 100%; object-fit: cover;
+  pointer-events: none;
+}
+/* Quien pide menos movimiento se queda con el poster fijo. */
+@media (prefers-reduced-motion: reduce) { .hero-video { display: none; } }
+/* Overlay en degradado hacia la izquierda: el texto se lee sobre la zona oscura y
+   la foto sigue viéndose a la derecha, como en el sitio original. */
+.hero::after {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(100deg, rgba(11, 17, 29, 0.95) 0%, rgba(11, 17, 29, 0.86) 42%, rgba(11, 17, 29, 0.45) 72%, rgba(11, 17, 29, 0.35) 100%);
+}
+.hero h1 { color: #fff; margin-bottom: 1.25rem; text-wrap: balance; }
+.hero h1 .ray { color: var(--amarillo); }
+.hero-lead { font-size: var(--text-lg); color: rgba(255, 255, 255, 0.88); max-width: 50ch; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+/* Móvil (tanda 2, tarea 5): a 360 px el botón de llamar ocupaba tanto que WhatsApp caía a una
+   segunda fila, por debajo del pliegue de 640 px en la home, el boletín y reformas
+   (campana/tables/D-conversion.tsv). Con menos relleno caben los dos en una fila desde 360 px;
+   a 320 vuelven a apilarse solos (flex-wrap), sin scroll horizontal. En la home, además, el
+   segundo párrafo del hero es relleno («desde reparaciones urgentes hasta…»): en móvil se
+   omite para que los botones suban; en escritorio sigue. */
+@media (max-width: 479px) {
+  .hero-actions { gap: 0.5rem; margin-top: 1.25rem; }
+  .hero-actions .btn { padding-inline: 0.85rem; }
+  .hero-lead-2 { display: none; }
+}
+.hero .btn-linea { color: #fff; }
+.hero .btn-linea:hover { background: #fff; color: var(--ink); border-color: #fff; }
+.hero-grid { display: grid; gap: clamp(2rem, 1rem + 4vw, 4rem); align-items: center; }
+@media (min-width: 940px) { .hero-grid { grid-template-columns: 1.1fr 0.9fr; } }
+
+/* tarjeta de precio: lo que vienen a buscar, tratado como pieza de diseño */
+.price-card {
+  background: #fff; color: var(--ink-soft);
+  border-radius: var(--radius); padding: clamp(1.4rem, 1rem + 1.6vw, 2rem);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.75);
+}
+.price-card .eyebrow { margin-bottom: 0.3rem; }
+.price-figure { font-size: var(--text-figure); font-weight: 800; line-height: 1; letter-spacing: -0.04em; display: block; }
+.price-note { font-size: var(--text-xs); color: var(--slate); margin: 0.45rem 0 0; }
+.price-card dl { margin: 1.25rem 0 0; display: grid; gap: 0.55rem; font-size: var(--text-sm); }
+.price-card dl > div { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: 0.55rem; border-bottom: 1px solid var(--border); }
+.price-card dl > div:last-child { border-bottom: 0; padding-bottom: 0; }
+.price-card dt { color: var(--slate); }
+.price-card dd { margin: 0; font-weight: 700; white-space: nowrap; }
+
+/* Migas de pan de las páginas de servicio y de localidad. El enlace «Inicio» medía
+   39×22 px: le aplica el criterio 2.5.8 (WCAG 2.2 AA) igual que a los del pie, porque
+   una miga de pan es navegación y no una frase, y con `display: inline` el alto de la
+   caja es el de la línea. Solo se pide el mínimo —sin padding— para no mover el
+   titular de su sitio. Cazado por `node tools/a11y.js` en 31 de las 32 páginas: la
+   medición a mano del 9-oct se hizo sobre la home, que no lleva migas. */
+.migas a { display: inline-block; min-height: 24px; }
+
+/* ---------- «¿Qué necesitas?»: el selector de conversión del sitio original,
+   aquí resuelto con enlaces para no cargar un solo byte de JavaScript ---------- */
+
+.necesitas {
+  background: #fff; color: var(--ink-soft);
+  border-radius: var(--radius); padding: clamp(1.1rem, 0.8rem + 1.2vw, 1.6rem);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.8);
+}
+.necesitas h2 { font-size: var(--text-lg); margin-bottom: 1rem; text-align: right; color: var(--ink); }
+.need-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 0.5rem; margin: 0 0 1rem; padding: 0; list-style: none; }
+.need-grid a {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem;
+  min-height: 74px; padding: 0.55rem 0.4rem;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  font-size: var(--text-xs); font-weight: 600; text-align: center; text-decoration: none; color: var(--ink-soft);
+  transition: border-color var(--duration) var(--ease), background-color var(--duration) var(--ease), transform var(--duration) var(--ease);
+}
+.need-grid a span { font-size: 1.25rem; line-height: 1; }
+.need-grid a:hover { border-color: var(--amarillo); background: #fffdf0; transform: translateY(-2px); }
+.need-cta { width: 100%; justify-content: center; }
+
+/* ---------- franja de credenciales en amarillo ---------- */
+
+.trust { background: var(--amarillo); padding: 1rem var(--gutter); }
+.trust .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; align-items: center; font-size: var(--text-sm); font-weight: 600; color: var(--ink); }
+.trust span { display: inline-flex; align-items: center; gap: 0.45rem; }
+
+/* ---------- secciones ---------- */
+
+.section { padding: var(--space-section) 0; }
+.section-warm { background: var(--bg-warm); border-block: 1px solid var(--border); }
+.section-head { max-width: 58ch; margin-bottom: clamp(2rem, 1.4rem + 2.4vw, 3.4rem); }
+.section-head-flush { margin-bottom: 0; }
+.eyebrow-claro { color: var(--amarillo); }
+/* Resalte de señalización: el recurso de énfasis de la marca. No hay cursivas. */
+/* El subrayador amarillo lleva SIEMPRE texto oscuro: heredaba el color del titular
+   y en el hero y el cierre, donde el titular es blanco, quedaba a 1,38:1. */
+.mark { color: var(--ink); background: var(--amarillo); padding: 0.04em 0.18em 0.1em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.section-head h2 { text-wrap: balance; margin-bottom: 0.85rem; }
+.section-head p { color: var(--slate); margin: 0; }
+
+/* El primer servicio ocupa el doble: es el que más se busca. No es una rejilla uniforme. */
+.services { display: grid; gap: clamp(0.9rem, 0.6rem + 1.2vw, 1.4rem); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+/* Bento de 6: el primero manda (es el que más se busca), los cuatro de en medio
+   van a la misma altura y el último cierra en banda ancha. Ninguna fila huérfana. */
+@media (min-width: 900px) {
+  .services { grid-template-columns: repeat(6, 1fr); }
+  .service { grid-column: span 2; }
+  .service:first-child { grid-column: span 4; }
+  .service:last-child { grid-column: span 6; }
+  .service:last-child .price-inline { margin-top: 0.4rem; }
+}
+
+.service {
+  position: relative; display: flex; flex-direction: column;
+  padding: clamp(1.3rem, 1rem + 1.2vw, 1.9rem);
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+  text-decoration: none; overflow: hidden;
+  transition: transform var(--duration) var(--ease), box-shadow var(--duration) var(--ease), border-color var(--duration) var(--ease);
+}
+.service:hover { transform: translateY(-3px); border-color: var(--amarillo); background: #fffdf0; box-shadow: var(--shadow-lift); }
+.service .ico { font-size: 1.5rem; line-height: 1; margin-bottom: 0.9rem; }
+.service h3 { margin-bottom: 0.5rem; }
+/* Una tarjeta que cuelga directamente del h1 de la página lleva h2 para no
+   saltar de nivel (1.3.1), pero tipográficamente es la misma pieza. */
+.service h2 { font-size: var(--text-h3); font-weight: 700; line-height: 1.2; letter-spacing: -0.018em; margin-bottom: 0.5rem; }
+.service p { color: var(--ink-soft); margin-bottom: 0.7rem; font-size: var(--text-sm); }
+.service .detail { color: var(--slate); }
+.service .price-inline { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.03em; display: block; margin-top: 0.8rem; }
+.service .price-inline small { font-size: var(--text-xs); font-weight: 500; color: var(--slate); display: block; letter-spacing: 0; }
+.service .tag { margin-top: auto; padding-top: 1rem; font-size: var(--text-sm); font-weight: 700; color: var(--verde); display: inline-flex; align-items: center; gap: 0.35rem; }
+.service .tag::after { content: '→'; transition: transform var(--duration) var(--ease); }
+.service:hover .tag::after { transform: translateX(4px); }
+
+/* Titular de la página de error: cuerpo de h2. Con el de h1 desbordaba a 320 px
+   mientras la fuente propia no había cargado. */
+.h-404 { font-size: var(--text-h2); line-height: 1.14; letter-spacing: -0.03em; }
+/* Titular de las páginas de catálogo: son listados y fichas, no portadas, así
+   que llevan cuerpo de h2. Con el de h1 —line-height 1,02— el fondo amarillo
+   del resalte se comía la primera línea del párrafo siguiente en cuanto el
+   titular ocupaba tres líneas. */
+.h-catalogo { font-size: var(--text-h2); line-height: 1.14; letter-spacing: -0.03em; }
+
+/* ---------- casos: «qué nos encontramos», solo en las páginas de servicio ---------- */
+/* 🔴 Esta sección no tenía estilo: se dibujaba con los h3 y p por defecto. Con los
+   cuatro casos originales no se notaba; al subir a diez con los micronichos, era
+   pantalla y media de texto corrido en una sola columna.
+
+   No se resuelve con una rejilla de tarjetas iguales. Un caso es un síntoma que el
+   cliente tiene que reconocer de un vistazo, así que se lee como un índice: regla
+   fina, dos columnas y escaneo vertical. La jerarquía la da la escala, igual que en
+   `.services`: el primero —el síntoma con el que más gente llega— va a ancho
+   completo y con cuerpo de titular; los demás, en texto de índice. */
+.casos { display: grid; column-gap: clamp(1.8rem, 1.2rem + 2.6vw, 3.6rem); }
+.caso { padding: 1.15rem 0; border-top: 1px solid var(--border); }
+.caso h3 { margin-bottom: 0.35rem; }
+.caso p { color: var(--slate); font-size: var(--text-sm); margin: 0; }
+
+@media (min-width: 820px) {
+  .casos { grid-template-columns: 1fr 1fr; }
+  .caso:first-child { grid-column: 1 / -1; border-top: 0; padding-top: 0; }
+  .caso:first-child h3 { font-size: var(--text-h2); line-height: 1.14; letter-spacing: -0.03em; }
+  .caso:first-child p { font-size: var(--text-base); max-width: 56ch; }
+  /* Con el primero ocupando la fila, el último cae solo en la columna izquierda
+     cuando su posición es par. En vez de dejar el hueco, cierra el bloque a ancho
+     completo: el número de casos cambia por página y no puede cuadrar a mano. */
+  .caso:last-child:nth-child(even) { grid-column: 1 / -1; }
+}
+
+/* ---------- método ---------- */
+
+.steps { display: grid; gap: clamp(1.3rem, 1rem + 1.4vw, 2.2rem); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); counter-reset: step; }
+.step { counter-increment: step; }
+.step::before {
+  content: counter(step, decimal-leading-zero);
+  display: inline-block; font-size: 1.1rem; font-weight: 800; color: var(--ink);
+  background: var(--amarillo); padding: 0.25rem 0.6rem; border-radius: var(--radius-sm);
+  margin-bottom: 0.85rem;
+}
+.step h3 { font-size: var(--text-lg); margin-bottom: 0.4rem; }
+.step p { color: var(--slate); font-size: var(--text-sm); margin: 0; }
+
+/* ---------- cobertura ---------- */
+
+.zones { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0; padding: 0; list-style: none; }
+/* En las páginas de localidad las píldoras son texto; en el índice del blog
+   llevan enlace, y entonces el objetivo táctil es el <a>, no el <li>. */
+.zones li > a { display: inline-block; min-height: 24px; text-decoration: none; }
+.zones li { padding: 0.4rem 0.85rem; background: #fff; border: 1px solid var(--border); border-radius: var(--pill); font-size: var(--text-sm); font-weight: 600; color: var(--ink-soft); }
+
+/* ---------- faq ---------- */
+
+.faq { max-width: 80ch; }
+.faq details { border-bottom: 1px solid var(--border); padding: 1.1rem 0; }
+.faq summary { display: flex; align-items: baseline; justify-content: space-between; gap: 1.2rem; cursor: pointer; list-style: none; font-size: var(--text-h3); font-weight: 700; letter-spacing: -0.015em; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: '+'; color: var(--verde); font-size: 1.5rem; font-weight: 700; transition: transform var(--duration) var(--ease); }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details > p { margin: 0.8rem 0 0; color: var(--slate); }
+
+/* Precio de una ficha del catálogo. Es el dato por el que la gente entra en esa
+   página, así que va con cuerpo de cifra y no escondido en un párrafo. */
+.ficha-precio { margin: 0 0 1.6rem; font-size: var(--text-lg); max-width: none; }
+.ficha-precio strong { font-size: var(--text-h3); font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.ficha-precio span { color: var(--slate); font-size: var(--text-sm); }
+
+/* Enlaces a lo que se queda en Odoo —tienda y blog— al final de la página de
+   servicio. En segundo plano a propósito: fuera del menú y después de las
+   preguntas, pero con el objetivo táctil completo porque son enlaces de
+   navegación y les aplica el 2.5.8. */
+.mas-info { display: flex; flex-wrap: wrap; gap: 0.6rem 1.6rem; margin: 1.8rem 0 0; max-width: none; font-size: var(--text-sm); }
+.mas-info a { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 24px; font-weight: 700; color: var(--verde); text-decoration: none; }
+.mas-info a::after { content: '→'; transition: transform var(--duration) var(--ease); }
+.mas-info a:hover { text-decoration: underline; }
+.mas-info a:hover::after { transform: translateX(4px); }
+
+/* ---------- artículo del blog ----------
+   El cuerpo viene del editor de Odoo y es prosa larga: tablas, listas, índice
+   con anclajes y bloques de preguntas. Se le da medida de lectura y ritmo, que
+   es lo único que le faltaba al salir de su envoltorio de Bootstrap. */
+.articulo { max-width: 72ch; }
+.articulo .bloque { margin-bottom: 2.2rem; }
+.articulo h2 { font-size: var(--text-h3); margin: 2.4rem 0 0.8rem; }
+.articulo h3 { font-size: var(--text-lg); margin: 1.6rem 0 0.5rem; }
+.articulo .lead { font-size: var(--text-lg); color: var(--ink-soft); }
+.articulo ul, .articulo ol { padding-left: 1.3rem; margin: 0 0 1.2rem; }
+.articulo li { margin-bottom: 0.4rem; }
+/* Los enlaces del índice del artículo y los de la lista de fuentes son
+   navegación dentro de una lista, no enlaces embebidos en una frase: les
+   aplica el objetivo táctil de 24 px del criterio 2.5.8. Medían 22. */
+.articulo li > a { display: inline-block; min-height: 24px; }
+.articulo a { color: var(--verde); font-weight: 600; }
+/* La línea de «revisado por»: es la señal de autoría que sostiene el E-E-A-T,
+   así que se marca como dato y no como letra pequeña escondida.
+   Va sobre superficie, como `.price-card` o `.resena`, y NO con un borde lateral
+   de color: ese recurso no está en esta hoja —el amarillo aquí es señalización,
+   no adorno— y es además el tic más reconocible de una interfaz generada sin
+   criterio. Lo avisó el hook de diseño sobre una regla escrita hoy. */
+.articulo .revisado {
+  font-size: var(--text-xs); color: var(--slate);
+  background: var(--bg-warm); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 0.7rem 0.9rem;
+}
+.articulo .hero-actions, .articulo .btn { margin-top: 0.4rem; }
+
+/* Tablas del artículo. Se desplazan solas en móvil en vez de desbordar la
+   página: a 320 px una tabla de tres columnas no cabe de ninguna manera, y el
+   criterio 1.4.10 solo permite scroll en el elemento que lo necesita. */
+.articulo table, .tabla { width: 100%; border-collapse: collapse; margin: 0 0 1.4rem; font-size: var(--text-sm); display: block; overflow-x: auto; }
+/* Listas de datos de las landings de localidad (sub-zonas, «por qué nosotros»): dos
+   columnas en ancho, una en móvil. Son el contenido que Google lee debajo del pliegue;
+   el lead que va a llamar ya tiene arriba el precio y el botón. */
+.lista-datos { max-width: 80ch; margin: 1.2rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.7rem 2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 28ch), 1fr)); color: var(--slate); }
+.lista-datos li { padding-left: 1.2rem; position: relative; }
+.lista-datos li::before { content: ''; position: absolute; left: 0; top: 0.6em; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--verde); }
+/* Galería de trabajos reales de la zona. Rejilla que se adapta: 3 columnas en ancho, 2 en
+   tableta, 1 en móvil. La proporción la fija cada imagen (width/height en el HTML), así que
+   no hay salto de layout al cargar. El pie va en tinta secundaria: es contexto, no titular. */
+.galeria { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr)); margin-top: 1.5rem; }
+.galeria figure { margin: 0; border-radius: var(--radius, 12px); overflow: hidden; background: var(--bg-warm); }
+.galeria img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.galeria figcaption { padding: 0.6rem 0.8rem 0.8rem; font-size: var(--text-sm); color: var(--slate); }
+/* Enlaces a las landings vecinas: el enlazado interno entre hermanas que Odoo tenía y la
+   v2 había perdido. Objetivo táctil ≥ 24 px lo da el propio .tag. */
+.vecinas { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0.4rem 0 0; }
+/* Frase bajo la rejilla de servicios de cada localidad que lleva a la OCA de negocios. */
+.servicios-extra { max-width: 70ch; margin: 1.8rem 0 0; color: var(--slate); }
+/* Palanca D: contacto al alcance. Botones bajo el H1 de las plantillas sin hero, y una
+   frase con los dos enlaces al final de precios y preguntas. */
+.acciones-cabecera { margin-top: 1rem; }
+.cta-linea { max-width: 70ch; margin: 1.4rem 0 0; color: var(--slate); }
+.cta-linea a { font-weight: 700; color: var(--verde); }
+/* Fase 3, idiomas. La fila corta va en el hero (fondo oscuro); el selector completo, antes del
+   pie. Objetivo táctil ≥ 24 px en los dos. */
+.idiomas { padding: 1.6rem 0 0.4rem; }
+.idiomas .vecinas { justify-content: center; }
+.idiomas-mini { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0 0 0.9rem; font-size: var(--text-xs); }
+.idiomas-mini a, .idiomas-mini span { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; min-height: 26px; padding: 0 0.4rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.4); color: #fff; font-weight: 700; letter-spacing: 0.04em; text-decoration: none; }
+.idiomas-mini a:hover { background: rgba(255, 255, 255, 0.15); }
+.idiomas-mini [aria-current] { background: #fff; color: var(--ink); }
+/* Assistant se sirve con el subconjunto latino básico: no trae cirílico, ni chino, ni las ő/ű
+   del húngaro. En esos idiomas, la fuente del sistema para toda la página, en vez de mezclar
+   letras de dos fuentes en la misma palabra. */
+:root:lang(ru), :root:lang(zh), :root:lang(hu) { --font: system-ui, -apple-system, 'Segoe UI', 'Noto Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+/* Idiomas con palabras largas (fase 3, medido a 320 px). En ruso y alemán una sola palabra del
+   H1 («электроустановки», «Sicherungskasten») era más ancha que la pantalla y empujaba la página
+   a 337-403 px: se parte con guion donde el navegador sepa y, si no, donde haga falta. En
+   húngaro «Szolgáltatások» no cabía en la barra junto al logo y WhatsApp: letra y relleno algo
+   menores en la barra, solo en húngaro y solo en pantallas estrechas. El español no cambia. */
+:root:is(:lang(de), :lang(ru), :lang(hu), :lang(nl), :lang(fr), :lang(it)) :is(h1, h2, h3) { hyphens: auto; overflow-wrap: anywhere; }
+@media (max-width: 400px) {
+  :root:lang(hu) .site-nav a:not(.btn) { font-size: var(--text-xs); padding-inline: 0.3rem; }
+  :root:lang(hu) .brand img { height: 34px; }
+}
+.tabla th, .tabla td { border: 1px solid var(--border); padding: 0.6rem 0.8rem; text-align: left; vertical-align: top; }
+.tabla thead th { background: var(--bg-warm); font-weight: 700; }
+.tabla tbody tr:nth-child(even) { background: rgba(15, 25, 35, 0.02); }
+
+/* ---------- páginas sueltas migradas de Odoo ---------- */
+
+/* TL;DR al inicio de página: el resumen que responde antes de que el usuario
+   tenga que leer. */
+.tldr { background: var(--bg-warm); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.1rem 1.3rem; margin: 0 0 1.6rem; font-size: var(--text-base); max-width: none; }
+.tldr p { margin: 0; max-width: none; }
+
+/* Rejilla simple de 3-4 columnas (h4+p) sin tarjeta: es prosa agrupada, no
+   una lista de productos, así que no lleva el borde de .service. */
+.cols { display: grid; gap: 1.4rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 0 0 1.6rem; }
+.cols h3 { font-size: var(--text-lg); font-weight: 700; line-height: 1.3; margin-bottom: 0.3rem; }
+.cols p { color: var(--slate); font-size: var(--text-sm); margin: 0; }
+
+/* El box «quién responde de qué»: dos columnas, una con el borde del sistema
+   y otra en verde de marca, que es la nuestra. Nada de inline styles. */
+.compara { display: grid; gap: 1.2rem; margin: 0 0 1.6rem; }
+@media (min-width: 760px) { .compara { grid-template-columns: 1fr 1fr; } }
+.compara-col { border-radius: var(--radius); padding: 1.4rem; background: #fff; }
+.compara-ajena { border: 2px solid var(--border-strong); }
+.compara-propia { border: 2px solid var(--verde); }
+.compara-col h3 { font-size: var(--text-lg); margin-bottom: 0.4rem; }
+.compara-col p { color: var(--slate); font-size: var(--text-sm); }
+.compara-col ul { margin: 0 0 0.8rem; padding-left: 1.2rem; font-size: var(--text-sm); }
+
+/* ---------- cierre ---------- */
+
+.cta { padding: clamp(2.2rem, 1.5rem + 3vw, 4rem); background: var(--night); color: #fff; border-radius: var(--radius); display: grid; gap: 1.6rem; align-items: center; }
+@media (min-width: 880px) { .cta { grid-template-columns: 1.25fr 0.75fr; } }
+/* Un hijo de grid no se encoge por debajo del min-content de su contenido —la
+   palabra más larga, sin cortar— salvo que se le diga. «telecomunicaciones»
+   sola, al tamaño de un h2, mide más que un viewport de 320 px: el grid
+   ensanchaba el bloque entero y aparecía scroll horizontal (1.4.10). Pasa con
+   cualquier palabra larga en un titular de .cta, no solo con esta. */
+.cta > div { min-width: 0; }
+.cta h2 { color: #fff; text-wrap: balance; overflow-wrap: break-word; }
+.cta p { color: rgba(255, 255, 255, 0.78); margin: 0.8rem 0 0; }
+.cta .btn-linea { color: #fff; }
+.cta .btn-linea:hover { background: #fff; color: var(--ink); border-color: #fff; }
+.cta-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+
+/* ---------- reseñas ---------- */
+
+.resenas { display: grid; gap: clamp(0.9rem, 0.6rem + 1vw, 1.4rem); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.resena { margin: 0; padding: clamp(1.2rem, 1rem + 1vw, 1.6rem); background: #fff; border: 1px solid var(--border); border-radius: var(--radius); display: flex; flex-direction: column; }
+.estrellas { font-size: 1.05rem; letter-spacing: 0.08em; color: var(--gold); margin: 0 0 0.7rem; }
+.estrellas span { color: var(--border-strong); }
+.resena blockquote { margin: 0 0 1rem; font-size: var(--text-sm); color: var(--ink-soft); quotes: '«' '»'; }
+.resena blockquote::before { content: open-quote; } .resena blockquote::after { content: close-quote; }
+.resena figcaption { margin-top: auto; font-size: var(--text-xs); font-weight: 700; color: var(--ink); }
+.resena figcaption span { font-weight: 400; color: var(--slate); }
+.resenas-cta { margin: 1.8rem 0 0; }
+
+/* ---------- carrusel de clientes ----------
+   scroll-snap: se arrastra con el dedo y con la rueda, sin una línea de JavaScript.
+   Sangra fuera del contenedor a propósito para que se vea que hay más a los lados. */
+
+.carrusel {
+  display: flex; gap: 0.8rem;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 0.5rem clamp(1rem, 0.6rem + 2.2vw, 2.75rem) 1.2rem;
+  scrollbar-width: thin; -webkit-overflow-scrolling: touch;
+}
+.carrusel img {
+  flex: 0 0 auto; width: clamp(220px, 32vw, 330px); height: auto; aspect-ratio: 4 / 3;
+  object-fit: cover; border-radius: var(--radius); scroll-snap-align: center;
+  border: 1px solid var(--border);
+}
+.carrusel:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; border-radius: var(--radius); }
+@media (prefers-reduced-motion: no-preference) { .carrusel { scroll-behavior: smooth; } }
+
+
+/* ---------- pie, replicando el de okservice.es: fondo #111827 ---------- */
+
+.site-foot { background: var(--night); color: rgba(248, 250, 252, 0.88); padding: clamp(2.8rem, 2rem + 3vw, 4.5rem) 0 2rem; font-size: var(--text-sm); }
+.site-foot h2 { font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--amarillo); margin: 0 0 0.9rem; }
+.site-foot ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.45rem; }
+/* Objetivo táctil de 24 px (WCAG 2.2, criterio 2.5.8, nivel AA). Los enlaces del pie
+   medían 17 px de alto con padding 0 y `display: inline`, así que el padding vertical no
+   les aplicaba: 34 objetivos por debajo del mínimo, 25 de ellos la lista de zonas. La
+   excepción del criterio es el enlace dentro de una frase, y estos son listas de navegación.
+   Lighthouse da 100 en accesibilidad y no comprueba este criterio. */
+.site-foot a { color: rgba(248, 250, 252, 0.88); text-decoration: none; }
+.site-foot li > a, .foot-atajos a, .foot-legales a { display: inline-block; min-height: 24px; padding-block: 0.22rem; }
+/* `.foot-legales` es un <p> con dos enlaces y un separador, no una frase: aquí
+   inline-block no rompe el flujo del texto. En un enlace dentro de prosa sí lo haría,
+   y además esos quedan exentos del criterio por ser inline. */
+.site-foot a:hover { color: var(--amarillo); text-decoration: underline; }
+.site-foot p { color: rgba(248, 250, 252, 0.66); }
+
+.foot-top { display: grid; gap: 2.2rem; padding-bottom: 2.2rem; }
+@media (min-width: 900px) { .foot-top { grid-template-columns: 0.9fr 2.1fr; gap: 3rem; } }
+.foot-marca img { height: 50px; width: auto; border-radius: 8px; margin-bottom: 1rem; }
+.foot-marca p { margin: 0 0 1.1rem; max-width: 38ch; font-size: var(--text-sm); }
+.foot-atajos { margin-bottom: 1.1rem !important; }
+.foot-atajos strong { color: var(--amarillo); font-size: var(--text-lg); }
+
+.foot-cols { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); }
+.foot-cols li { font-size: var(--text-xs); line-height: 1.5; }
+/* Segundo encabezado dentro de una misma columna del pie: necesita aire arriba
+   para que no parezca que la lista anterior sigue. */
+.foot-cols .foot-h2-sep { margin-top: 1.6rem; }
+
+.foot-redes { display: flex !important; flex-wrap: wrap; gap: 0.5rem; }
+.foot-redes a { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.8rem; border: 1px solid rgba(248, 250, 252, 0.22); border-radius: var(--pill); font-size: var(--text-xs); font-weight: 700; }
+.foot-redes a:hover { border-color: var(--amarillo); text-decoration: none; }
+
+/* Las 25 zonas cierran el silo: desde cualquier página se llega a cualquier localidad. */
+.foot-zonas { padding: 1.6rem 0; border-top: 1px solid rgba(248, 250, 252, 0.14); }
+.foot-lista-zonas { display: flex !important; flex-wrap: wrap; gap: 0.35rem 1rem; }
+.foot-lista-zonas li { font-size: var(--text-xs); }
+
+.legal { padding-top: 1.5rem; border-top: 3px solid var(--amarillo); font-size: var(--text-xs); line-height: 1.75; }
+.legal p { max-width: none; margin: 0 0 0.3rem; }
+.legal strong { color: rgba(248, 250, 252, 0.92); }
+.legal a { text-decoration: underline; }
+.foot-corazon { color: var(--amarillo) !important; font-weight: 700; margin-bottom: 0.8rem !important; }
+.foot-legales { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.9rem !important; }
+
+/* Accesos externos del pie como píldora: e-distribución, el REBT o el ayuntamiento
+   son herramientas que el cliente abre, no letra pequeña. */
+.foot-botones { display: flex !important; flex-wrap: wrap; gap: 0.4rem; }
+.foot-btn {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.42rem 0.85rem;
+  border: 1px solid rgba(248, 250, 252, 0.24); border-radius: var(--pill);
+  font-size: var(--text-xs); font-weight: 600; line-height: 1.25;
+  transition: border-color var(--duration) var(--ease), background-color var(--duration) var(--ease), transform var(--duration) var(--ease);
+}
+.foot-btn span { color: var(--amarillo); font-size: 0.85em; }
+.foot-btn:hover { border-color: var(--amarillo); background: rgba(241, 222, 39, 0.1); transform: translateY(-1px); text-decoration: none !important; }
+
+/* ---------- iconografía ----------
+   SVG inline con currentColor: heredan el color del contexto, así el mismo icono
+   sirve sobre fondo claro y sobre el pie oscuro sin duplicar ficheros. */
+.ico-svg { width: 100%; height: 100%; display: block; }
+.ico-mini { width: 1em; height: 1em; flex: 0 0 auto; }
+.service .ico { width: 2rem; height: 2rem; color: var(--gold); margin-bottom: 0.9rem; }
+.service:hover .ico { color: var(--verde); }
+.foot-redes .ico-mini, .foot-btn .ico-mini { color: var(--amarillo); }
+.foot-btn .ico-mini { opacity: 0.75; }
+.foot-btn:hover .ico-mini { opacity: 1; }
+.eyebrow .ico-mini { vertical-align: -0.12em; margin-right: 0.3em; }
+.ico-need { width: 1.35rem; height: 1.35rem; color: var(--gold); }
+.ico-star { width: 1.05rem; height: 1.05rem; }
+.estrellas { display: flex; gap: 0.1rem; }
+.estrellas .on { color: var(--gold); display: inline-flex; }
+.estrellas .off { color: var(--border-strong); display: inline-flex; }
+.trust span .ico-mini, .btn .ico-mini { vertical-align: -0.12em; }
+.ico-corazon { width: 0.95em; height: 0.95em; vertical-align: -0.1em; }
+.foot-corazon { display: inline-flex; align-items: center; gap: 0.35rem; }

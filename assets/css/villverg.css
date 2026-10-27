@@ -1,0 +1,25 @@
+/* VILLVERG — capa corporativa sobre la hoja de la v2 de #Okservice.es.
+   Misma plantilla y mismo sistema (Assistant, noche + amarillo, píldora), pero aquí
+   la marca es la sociedad: un logotipo de texto en lugar del logo de okservice y
+   tarjetas de marca en lugar de tarjetas de servicio. */
+
+.brand-texto {
+  font-weight: 800; font-size: 1.35rem; letter-spacing: 0.14em;
+  color: var(--ink); text-decoration: none; padding: 0.2rem 0.4rem;
+}
+.brand-texto span { color: var(--gold); }
+.foot-marca .brand-texto { color: #fff; font-size: 1.6rem; padding: 0; display: inline-block; margin-bottom: 1rem; }
+
+.marca-url { font-size: var(--text-xs); color: var(--slate); font-weight: 700; letter-spacing: 0.02em; }
+.service.sin-enlace { cursor: default; }
+.service.sin-enlace:hover { transform: none; }
+
+.datos { display: grid; gap: 0.55rem; margin: 1.25rem 0 0; font-size: var(--text-sm); }
+.datos > div { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: 0.55rem; border-bottom: 1px solid var(--border); }
+.datos > div:last-child { border-bottom: 0; }
+.datos dt { color: var(--slate); }
+.datos dd { margin: 0; font-weight: 700; text-align: right; }
+
+.texto-legal { max-width: 72ch; }
+.texto-legal h2 { margin-top: 2.2rem; font-size: var(--text-h3); }
+.texto-legal p, .texto-legal li { color: var(--ink-soft); }
