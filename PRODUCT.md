@@ -16,7 +16,7 @@ Presentar VILLVERG SOLUCIONES INTEGRALES SL como la empresa única que está det
 Una sola sociedad de Tenerife Sur que reúne dos oficios distintos, instalaciones eléctricas y vivienda, con el mismo CIF, la misma numeración de factura y la misma responsabilidad.
 
 ## Operating Context
-Sitio estático en GitHub Pages (https://josecrea.github.io/villverg/), generado por `node tools/build.js`. Los datos de la sociedad viven solo en `EMPRESA` dentro de ese script. Cada marca tiene su web propia: okservice.es y villasproperties.es.
+Sitio estático en GitHub Pages (https://villverg.com/), generado por `node tools/build.js`. Los datos de la sociedad viven solo en `EMPRESA` dentro de ese script. Cada marca tiene su web propia: okservice.es y villasproperties.es.
 
 ## Capabilities and Constraints
 - Sin formularios, sin cookies ni analítica.
