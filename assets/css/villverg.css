@@ -61,6 +61,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 ::selection { background: var(--laton-claro); color: var(--noche-hondo); }
+html { scrollbar-color: color-mix(in srgb, var(--noche) 45%, var(--piedra)) var(--blanco); caret-color: var(--laton); }
 img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-underline-offset: 0.22em; text-decoration-thickness: 1px; }
 h1, h2, h3 {
@@ -69,7 +70,9 @@ h1, h2, h3 {
   font-variation-settings: "WONK" 0;
 }
 p { margin: 0 0 1.1em; max-width: 64ch; }
-:focus-visible { outline: 2px solid var(--laton-claro); outline-offset: 4px; }
+/* Foco: latón oscuro sobre claro (5,9:1); latón claro sobre foto y noche, donde el oscuro no se ve. */
+:focus-visible { outline: 2px solid var(--laton); outline-offset: 4px; }
+.cabecera:not(.cabecera-solida) :focus-visible, .portada :focus-visible, .contacto :focus-visible, .pie :focus-visible { outline-color: var(--laton-claro); }
 
 .saltar { position: absolute; left: -9999px; }
 .saltar:focus { left: var(--margen); top: 1rem; z-index: 20; background: var(--noche); color: var(--blanco); padding: 0.6rem 1rem; }
@@ -100,9 +103,14 @@ p { margin: 0 0 1.1em; max-width: 64ch; }
   padding-left: clamp(1.25rem, 0.5rem + 2.5vw, 2.75rem);
   border-left: 1px solid color-mix(in srgb, currentColor 35%, transparent);
 }
-@media (max-width: 719px) { .menu-opcional { display: none; } }
+@media (max-width: 719px) {
+  .menu-opcional { display: none; }
+  .menu a:not(.menu-opcional) { display: inline-flex; align-items: center; min-height: 44px; }
+}
 .menu a { white-space: nowrap; }
 @media (max-width: 419px) { .menu-telefono { padding-left: 1rem; } .cabecera .logotipo { font-size: 1.15rem; letter-spacing: 0.24em; } }
+/* Por debajo de 380px no caben logotipo, Contacto y teléfono: queda el teléfono, que es la acción directa. */
+@media (max-width: 379px) { .menu a:not(.menu-telefono) { display: none; } .menu-telefono { padding-left: 0; border-left: 0; } }
 
 /* ---------- portada ---------- */
 
@@ -124,6 +132,7 @@ p { margin: 0 0 1.1em; max-width: 64ch; }
 .portada h1 { font-size: var(--t-h1); font-weight: 600; max-width: 14ch; margin-bottom: 1.5rem; text-shadow: 0 2px 24px rgba(10, 29, 43, 0.35); }
 .portada-entradilla { font-size: var(--t-lg); line-height: 1.5; color: rgba(251, 250, 247, 0.9); max-width: 40ch; margin-bottom: 2.4rem; }
 .portada-acciones { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+@media (max-width: 479px) { .portada-acciones { display: grid; } }
 .portada-pie {
   position: absolute; right: var(--margen); bottom: clamp(3.5rem, 2rem + 6vw, 7rem);
   margin: 0; font-size: var(--t-xs); letter-spacing: 0.04em; color: rgba(251, 250, 247, 0.92); text-shadow: 0 1px 12px rgba(10, 29, 43, 0.7);
@@ -199,8 +208,12 @@ p { margin: 0 0 1.1em; max-width: 64ch; }
 
 .banda { position: relative; height: clamp(22rem, 55vw, 44rem); overflow: hidden; margin: 0; }
 .banda img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
+.banda::after {
+  content: ''; position: absolute; inset: auto 0 0; height: 9rem; pointer-events: none;
+  background: linear-gradient(to top, rgba(10, 29, 43, 0.55), rgba(10, 29, 43, 0));
+}
 .banda figcaption {
-  position: absolute; left: var(--margen); bottom: 1.5rem;
+  position: absolute; left: var(--margen); bottom: 1.5rem; z-index: 1;
   font-size: var(--t-sm); color: var(--blanco); letter-spacing: 0.02em;
   text-shadow: 0 1px 14px rgba(10, 29, 43, 0.85);
 }
