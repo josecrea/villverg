@@ -11,10 +11,13 @@ status: draft
 # Perfil del usuario
 
 ## Quién lo usa
-{el «avatar»: quién es, qué quiere conseguir, desde qué dispositivo}
+Escaparate general del grupo, sin un público prioritario (Jose, 27-oct-2026): bancos, proveedores y socios
+que comprueban que la empresa es seria; clientes de #Okservice.es o Villa's Properties que quieren saber
+quién hay detrás; inversores y compradores, también extranjeros. Móvil y escritorio.
 
 ## Cómo se le habla
-{español, tuteo, sin jerga · o el registro que toque}
+Español, **tuteo**, frases cortas y sobrias. Sin superlativos ni promesas.
 
 ## Lo que más le importa
-{rapidez, confianza, precio claro…}
+Entender en segundos quién es VILLVERG y a qué marca ir; encontrar los datos de la sociedad
+(CIF, registro, domicilio) sin buscar.

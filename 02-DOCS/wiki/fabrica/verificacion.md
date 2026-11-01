@@ -16,7 +16,14 @@ status: draft
 ## Rutas críticas y qué debe verse
 | Ruta | Qué debe aparecer | Qué NO debe pasar |
 |---|---|---|
-| `/` | {titular, botón principal} | {errores en consola, página en blanco} |
+| `/` | titular «Electricidad y vivienda en el sur de Tenerife», botones «Ir a #Okservice.es» e «Ir a Villa's Properties», CIF B19430115 | errores en consola, scroll horizontal, huecos donde van fotos |
+| `/aviso-legal.html` | razón social VILLVERG SOLUCIONES INTEGRALES SL, CIF y datos registrales | — |
+| `/404.html` | «Página no encontrada» con enlace «Volver al inicio» | — |
 
-## Flujos que se prueban pulsando
-{p. ej. «pulsar "Pedir presupuesto" abre el formulario»}
+## Anchos
+390 y 1440 px como mínimo; nada debe salirse de la pantalla de 320 a 1920 px.
+Por debajo de 380 px la cabecera solo muestra el teléfono (es intencionado).
+
+## Trampa al capturar
+Las fotos de marca y la banda de paisaje llevan `loading="lazy"`: en una captura de página entera
+hay que hacer scroll antes, o salen huecos que no son un fallo real.
