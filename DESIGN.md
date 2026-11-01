@@ -115,7 +115,7 @@ Paleta de noche atlántica sobre papel cálido, con un único metal. Los neutros
 
 ### Secondary
 - **Latón** (`laton`, #7a5c2e): acento sobre fondos claros, usado en el oficio de cada marca (Fraunces) y en las viñetas de los textos legales.
-- **Latón Claro** (`laton-claro`, #d2b07a): acento sobre fondos oscuros y estado interactivo: filete bajo el correo de contacto, hover de enlaces sobre noche, hover del botón claro, anillo de foco y selección de texto.
+- **Latón Claro** (`laton-claro`, #d2b07a): acento sobre fondos oscuros y estado interactivo: filete bajo el correo de contacto, hover de enlaces sobre noche, hover del botón claro, anillo de foco sobre foto y noche, y selección de texto. Sobre fondos claros el foco va en Latón (5,9:1), porque el Latón Claro se queda en 1,9:1.
 
 ### Neutral
 - **Blanco Cálido** (`blanco`, #fbfaf7): fondo de página y texto sobre noche. Nunca #fff.
@@ -151,7 +151,7 @@ Paleta de noche atlántica sobre papel cálido, con un único metal. Los neutros
 
 Contenedor de 80rem (`ancho`) con margen lateral fluido `clamp(1.25rem, 0.5rem + 3.5vw, 4.5rem)`. Ritmo vertical por sección `clamp(5rem, 3.5rem + 7vw, 10rem)`, con la presentación a 0,8 de ese valor por debajo. Las cuadrículas de dos columnas se activan a 960px (presentación 1.35fr/1fr, empresa 1fr/1.3fr, contacto 1.2fr/1fr) con huecos de 6rem; las filas de marca parten a 900px (1.15fr/1fr, alternando el lado de la foto) con altura mínima `min(86vh, 54rem)`.
 
-La portada ocupa `max(100svh, 40rem)`, con el texto abajo a la izquierda. La cabecera es absoluta y transparente sobre la portada; en el resto de páginas es estática, con fondo claro y filete inferior. En menos de 720px se ocultan los enlaces opcionales del menú (queda Contacto y el teléfono) y el pie vertical de la foto. La banda de paisaje mide `clamp(22rem, 55vw, 44rem)`. Las cifras de presentación usan `auto-fit` con mínimo de 13rem.
+La portada ocupa `max(100svh, 40rem)`, con el texto abajo a la izquierda. La cabecera es absoluta y transparente sobre la portada; en el resto de páginas es estática, con fondo claro y filete inferior. En menos de 720px se ocultan los enlaces opcionales del menú (queda Contacto y el teléfono, con 44px de área táctil) y el pie vertical de la foto; en menos de 380px queda solo el teléfono. En menos de 480px los dos botones de la portada ocupan el mismo ancho. La banda de paisaje mide `clamp(22rem, 55vw, 44rem)`. Las cifras de presentación usan `auto-fit` con mínimo de 13rem.
 
 ### Named Rules
 **The Split Row Rule.** Las marcas se presentan en filas partidas foto/texto que alternan lado y fondo (piedra, blanco). Nunca en rejilla de tarjetas iguales.
@@ -174,7 +174,7 @@ Esquina recta en todo: botones, fotos, filas, fichas. Radio cero es la regla del
 - **Claro (primario sobre foto):** fondo Blanco Cálido, texto noche. Hover: fondo Latón Claro.
 - **Borde (secundario sobre foto):** transparente, filete blanco al 75 %, texto blanco. Hover: se rellena de blanco con texto noche.
 - **Oscuro (sobre claro):** fondo noche, texto blanco. Hover: noche hondo.
-- **Transición:** 0,35s con `--ease` cubic-bezier(0.16, 1, 0.3, 1). Foco: anillo de 2px en Latón Claro con desfase de 4px.
+- **Transición:** 0,35s con `--ease` cubic-bezier(0.16, 1, 0.3, 1). Foco: anillo de 2px con desfase de 4px, en Latón sobre claro y en Latón Claro sobre foto y noche.
 
 ### Navigation
 Cabecera con logotipo espaciado a la izquierda y menú a la derecha en Manrope 500 a 0,9375rem. Los enlaces subrayan con un filete de 1px que crece de izquierda a derecha en 0,45s al pasar el cursor. El teléfono va separado por un filete vertical al 35 % del color actual. Sobre portada es blanco; en cabecera sólida, noche.

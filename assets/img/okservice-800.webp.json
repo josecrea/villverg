@@ -1,4 +1,5 @@
 {
-  "prompt": "Origen: imagen ya publicada en la web de #Okservice.es (~/okservice-landing/assets/img/hero-electricista.webp). Recorte 16:9 por la derecha y convertida a WebP; sin más edición.",
-  "createdAt": "2026-10-27T19:00:02.000Z"
+  "prompt": "Origen: imagen ya publicada en la web de #Okservice.es (~/okservice-landing/assets/img/hero-electricista.webp). Recorte 16:9 por la derecha y convertida a WebP; sin más edición. 1-nov-2026: corrección de color con ffmpeg (colorbalance para quitar el tono rosa, eq contrast 1.12 saturation 0.82 gamma 0.97, unsharp 0.6) y WebP q84. Misma foto real, sin retoque de contenido.",
+  "createdAt": "2026-10-27T19:00:02.000Z",
+  "modifiedAt": "2026-11-01T22:40:00.000Z"
 }
