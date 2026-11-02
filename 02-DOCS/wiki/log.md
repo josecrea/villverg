@@ -2,6 +2,9 @@
 
 > Fichero reservado OKF: lo más nuevo ARRIBA, fechas ISO 8601, nunca se edita una entrada pasada.
 
+## 2026-11-02 · hueco del README resuelto
+- README.md («Alojamiento») ya describe villverg.com (CNAME, BASE = '', DNS IONOS A ×4 + AAAA ×4 + www, HTTPS obligatorio). Resuelve el hueco de gaps.md del 2026-11-01 (issue #6).
+
 ## 2026-11-01 · brain rellenado
 - `fabrica documentar` dejó las plantillas vacías; rellenado a mano con datos de PRODUCT.md, DESIGN.md, tools/build.js y el historial (Claude, sesión con Jose).
 
