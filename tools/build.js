@@ -208,7 +208,7 @@ ${cabecera()}
     </article>
 
     <div class="otras-marcas">
-      <div class="contenedor"><p>También forma parte de VILLVERG <strong>biovida.shop</strong>, la tienda online del grupo.</p></div>
+      <div class="contenedor"><p>También forma parte de VILLVERG <strong>biovida.shop</strong>, la tienda online del grupo. Se ocupa de la venta de moringa al por mayor.</p></div>
     </div>
   </div>
 
@@ -354,7 +354,7 @@ const LLMS = `# VILLVERG
 ## Marcas
 - #Okservice.es (https://okservice.es/): electricista autorizado en Tenerife Sur, empresa instaladora en baja tensión nº ${EMPRESA.instalador}.
 - Villa's Properties (https://villasproperties.es/): inmobiliaria en el sur de Tenerife.
-- biovida.shop: tienda online.
+- biovida.shop: tienda online de venta de moringa al por mayor.
 
 ## Contacto de la sociedad
 - Teléfono: ${EMPRESA.telefonoVisible}

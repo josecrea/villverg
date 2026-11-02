@@ -6,3 +6,4 @@
 - 2026-11-01 · **biovida.shop:** qué vende o hace. La web no responde por HTTPS; se menciona sin enlace como «la tienda online del grupo». Falta descripción de Jose.
 - 2026-11-01 · **README.md** sigue describiendo el alojamiento antiguo (josecrea.github.io/villverg); la web ya está en villverg.com.
 - 2026-11-01 · No hay fotos reales de okservice de más resolución que `hero-electricista.webp` (1504 px).
+- 2026-11-02 · **Resuelto — biovida.shop:** Jose (2-nov-2026): «Es el área de villverg que se ocupa de la venta de moringa al por mayor». Ya figura en la portada y en llms.txt.
