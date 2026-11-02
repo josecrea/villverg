@@ -14,7 +14,9 @@ Genera en la raíz `index.html`, `aviso-legal.html`, `privacidad.html`, `404.htm
 
 ## Alojamiento
 
-GitHub Pages desde `main` (raíz). Sitio de proyecto: **https://villverg.com/** (`BASE` en `tools/build.js`). Si un día se quiere `villverg.com`: `BASE = ''`, añadir `CNAME` y estos DNS en IONOS:
+El sitio se sirve en **https://villverg.com/** con GitHub Pages desde `main` (raíz). El fichero `CNAME` de la raíz fija el dominio; en `tools/build.js`, `BASE = ''` y `SITIO = 'https://villverg.com'`. josecrea.github.io/villverg redirige a villverg.com.
+
+DNS en IONOS:
 
 | Tipo | Host | Valor |
 |------|------|-------|
@@ -22,4 +24,12 @@ GitHub Pages desde `main` (raíz). Sitio de proyecto: **https://villverg.com/** 
 | A | @ | 185.199.109.153 |
 | A | @ | 185.199.110.153 |
 | A | @ | 185.199.111.153 |
+| AAAA | @ | 2606:50c0:8000::153 |
+| AAAA | @ | 2606:50c0:8001::153 |
+| AAAA | @ | 2606:50c0:8002::153 |
+| AAAA | @ | 2606:50c0:8003::153 |
 | CNAME | www | josecrea.github.io |
+
+HTTPS obligatorio (Enforce HTTPS activado en GitHub Pages).
+
+Para volver a josecrea.github.io/villverg, mira el comentario de `BASE` en `tools/build.js`.
