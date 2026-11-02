@@ -10,11 +10,11 @@ Diseño: web corporativa clásica al nivel de los grupos inmobiliarios premium (
 node tools/build.js
 ```
 
-Genera en la raíz `index.html`, `aviso-legal.html`, `privacidad.html`, `404.html`, `robots.txt`, `sitemap.xml`, `llms.txt`, `CNAME` y `favicon.svg`. Los datos de la sociedad y las marcas están solo en `tools/build.js` (`EMPRESA`, `MARCAS`): se cambian ahí y se vuelve a construir.
+Genera en la raíz `index.html`, `aviso-legal.html`, `privacidad.html`, `404.html`, `sitemap.xml`, `llms.txt`, `favicon.svg` y `.nojekyll`. `CNAME` es un fichero fijo del repo (el build no lo toca). Los datos de la sociedad y las marcas están solo en `tools/build.js` (`EMPRESA`, `MARCAS`): se cambian ahí y se vuelve a construir.
 
 ## Alojamiento
 
-GitHub Pages desde `main` (raíz) con dominio propio: **https://villverg.com/**. `BASE = ''` en `tools/build.js` y el build genera el fichero `CNAME` (`villverg.com`). HTTPS obligatorio («Enforce HTTPS» activo en GitHub Pages). La dirección antigua josecrea.github.io/villverg redirige a villverg.com.
+GitHub Pages desde `main` (raíz) con dominio propio: **https://villverg.com/**. `BASE = ''` en `tools/build.js` y el fichero `CNAME` del repo (`villverg.com`) fija el dominio. HTTPS obligatorio («Enforce HTTPS» activo en GitHub Pages). La dirección antigua josecrea.github.io/villverg redirige a villverg.com.
 
 DNS en IONOS:
 
